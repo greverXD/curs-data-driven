@@ -1,0 +1,18 @@
+export interface RegisterDto {
+  email: string
+  password: string
+}
+
+export interface LoginDto {
+  email: string
+  password: string
+}
+
+export interface AuthResponse {
+  token: string
+}
+
+export interface JwtPayload {
+  userId: string
+  role: 'USER' | 'ADMIN'
+}
