@@ -1,5 +1,4 @@
 import { Product } from "./product.types.js"
-import { JwtPayload } from "..auth/auth.types.ts"
 const product: Product[] = []
 
 export const getAll= (): Product[] => product

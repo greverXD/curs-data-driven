@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 
 import authRoutes from './modules/auth/auth.routes'
 import productRoutes from './modules/product/product.routes'
-import orderRoutes from './modules/order/order.routes'
+import orderRoutes from './modules/order/order.router'
 
 import { errorMiddleware } from './middlewares/error.middleware'
 
