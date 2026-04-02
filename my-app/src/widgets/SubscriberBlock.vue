@@ -4,11 +4,11 @@
       Подпишись и получи -20%
     </h2>
 
-    <div class="flex justify-center gap-2 mt-4">
-      <input class="border px-3 py-2 rounded" placeholder="Email" />
-      <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-        Подписаться
-      </button>
+    <div class="flex justify-center gap-6 mt-6 text-2xl">
+      <a class="hover:scale-125 transition">📸</a>
+      <a class="hover:scale-125 transition">💬</a>
+      <a class="hover:scale-125 transition">▶️</a>
+      <a class="hover:scale-125 transition">🎵</a>
     </div>
   </section>
 </template>

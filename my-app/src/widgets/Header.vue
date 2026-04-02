@@ -2,9 +2,10 @@
 </script>
 
 <template>
-  <header class="flex justify-between items-center px-8 py-4 border-b">
+  <header class="flex justify-between items-center px-8 py-4 border-b h-[100px]">
     <div class="flex gap-6 items-center">
       <h1 class="font-bold text-xl">MyShop</h1>
+
       <nav class="flex gap-4 text-gray-600">
         <a href="#">Главная</a>
         <a href="#">Каталог</a>
@@ -13,13 +14,12 @@
       </nav>
     </div>
 
-    <div class="flex items-center gap-4">
-      <input
-        class="border px-3 py-1 rounded"
-        placeholder="Поиск..."
-      />
+    <div class="flex items-center gap-4 text-xl">
+
+      <button class="hover:scale-110 transition">🔍</button>
+
       <button>Войти</button>
-      <button>🛒</button>
+      <button class="hover:scale-110 transition">🛒</button>
     </div>
   </header>
 </template>

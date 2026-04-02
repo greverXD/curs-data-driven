@@ -8,10 +8,5 @@ import Footer from './widgets/Footer.vue'
 </script>
 
 <template>
-  <Header />
-  <HeroBanner />
-  <PopularProducts />
-  <Categories />
-  <SubscribeBlock />
-  <Footer />
+<router-view />
 </template>
