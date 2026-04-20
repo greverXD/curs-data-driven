@@ -11,6 +11,7 @@ import ContactsPage from '../pages/ContactsPage.vue'
 import TrackOrderPage from '../pages/TrackOrderPage.vue'
 import AccountPage from '../pages/AccountPage.vue'
 import CartPage from '../pages/CartPage.vue'
+import AuthSuccess from '../pages/AuthSuccess.vue'
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -24,8 +25,11 @@ export const router = createRouter({
   { path: '/delivery',name: 'delivery',component: DeliveryPage },
   { path: '/contact',name: 'contact',component: ContactsPage },
   { path: '/track',name: 'track',component: TrackOrderPage },
+  { path: '/auth-success',name: 'authSuccess',component: AuthSuccess }
   ]
 })
+
+
 
 
 

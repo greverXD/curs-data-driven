@@ -18,6 +18,10 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { session: false }),
   (req, res) => {
+    if (!req.user) {
+      return res.redirect('http://localhost:5173/login?error=google_auth_failed')
+    }
+
     const user = req.user as any
 
     const token = jwt.sign(
@@ -26,7 +30,7 @@ router.get(
       { expiresIn: '7d' }
     )
 
-    res.json({ token })
+    res.redirect(`http://localhost:5173/auth-success?token=${token}`)
   }
 )
 

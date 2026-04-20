@@ -1,6 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { register } from './api'
 
+const error = ref('')
+
+const handleRegister = async () => {
+  try {
+    await register({
+      email: email.value,
+      password: password.value
+    })
+
+    error.value = ''
+  } catch (e: any) {
+    error.value = e.response?.data?.message || 'Ошибка'
+  }
+}
 const emit = defineEmits(['switch'])
 
 const name = ref('')
@@ -36,4 +51,7 @@ const handleGoogleLogin = () => {
       </span>
     </p>
   </div>
+  <p v-if="error" class="text-red-500 text-sm">
+  {{ error }}
+</p>
 </template>

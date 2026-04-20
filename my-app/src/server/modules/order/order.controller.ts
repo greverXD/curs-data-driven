@@ -1,6 +1,6 @@
 import * as orderService from './order.service'
-
-export const create = async (req, res, next) => {
+import { Request,Response,NextFunction } from 'express'
+export const create = async (req:any, res:Response, next:NextFunction) => {
   try {
     const order = await orderService.createOrder(
       req.user.userId,
@@ -13,7 +13,7 @@ export const create = async (req, res, next) => {
   }
 }
 
-export const getMyOrders = async (req, res, next) => {
+export const getMyOrders = async (req:any, res:Response, next:NextFunction) => {
   try {
     const orders = await orderService.getUserOrders(req.user.userId)
     res.json(orders)
@@ -22,7 +22,7 @@ export const getMyOrders = async (req, res, next) => {
   }
 }
 
-export const getById = async (req, res, next) => {
+export const getById = async (req:any, res:Response, next:NextFunction) => {
   try {
     const order = await orderService.getById(req.params.id)
     res.json(order)

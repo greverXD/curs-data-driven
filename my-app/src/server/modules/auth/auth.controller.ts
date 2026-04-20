@@ -1,11 +1,20 @@
+import { Request, Response, NextFunction } from 'express'
 import * as authService from './auth.service'
 
-export const register = async (req, res) => {
-  const user = await authService.register(req.body.email, req.body.password)
+export const register = async (req: Request, res: Response) => {
+  const user = await authService.register(
+    req.body.email,
+    req.body.password
+  )
+
   res.json(user)
 }
 
-export const login = async (req, res, next) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const data = await authService.login(
       req.body.email,

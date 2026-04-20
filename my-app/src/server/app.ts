@@ -1,15 +1,16 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express from 'express'
 import cors from 'cors'
-import dotenv from 'dotenv'
 import passport from 'passport'
-import './modules/auth/google.strategy'
+
+import '../server/modules/auth/google.stategy'
 import authRoutes from './modules/auth/auth.routes'
 import productRoutes from './modules/product/product.routes'
 import orderRoutes from './modules/order/order.router'
 
 import { errorMiddleware } from './middlewares/error.middleware'
-
-dotenv.config()
 
 const app = express()
 

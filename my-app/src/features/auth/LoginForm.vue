@@ -4,14 +4,19 @@ import { login } from './api'
 import { useAuthStore } from '../../store/auth'
 
 const store = useAuthStore()
-
+const error = ref('')
 const handleLogin = async () => {
-  const res = await login({
-    email: email.value,
-    password: password.value
-  })
+  try {
+    const res = await login({
+      email: email.value,
+      password: password.value
+    })
 
-  store.setAuth(res.data.user, res.data.token)
+    error.value = ''
+
+  } catch (e: any) {
+    error.value = e.response?.data?.message || 'Ошибка входа'
+  }
 }
 
 
@@ -19,6 +24,9 @@ const emit = defineEmits(['switch'])
 
 const email = ref('')
 const password = ref('')
+const loginWithGoogle = () => {
+  window.location.href = 'http://localhost:3000/api/auth/google'
+}
 </script>
 
 <template>
@@ -31,7 +39,7 @@ const password = ref('')
     <button class="w-full bg-black text-white py-2 rounded;">Войти</button>
 
     <div class="flex gap-4 mt-4">
-      <button class="flex-1 border py-2 rounded hover:bg-gray-100;">Google</button>
+      <button class="flex-1 border py-2 rounded hover:bg-gray-100;" @click="loginWithGoogle">Google</button>
       <button class="flex-1 border py-2 rounded hover:bg-gray-100;">Instagram</button>
     </div>
 
@@ -44,5 +52,9 @@ const password = ref('')
         Зарегистрироваться
       </span>
     </p>
+      <p v-if="error" class="text-red-500 text-sm">
+  {{ error }}
+</p>
   </div>
+
 </template>
