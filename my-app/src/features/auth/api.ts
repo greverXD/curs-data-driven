@@ -17,3 +17,10 @@ export const login = (data: {
 }) => {
   return api.post('/auth/login', data)
 }
+export const verify = (data: { email: string; code: string }) => {
+  return axios.post('/api/auth/verify', data)
+}
+
+export const resendCode = (email: string) => {
+  return axios.post('/api/auth/resend', { email })
+}

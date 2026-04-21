@@ -1,15 +1,15 @@
 import prisma from '../../config/db'
 
-export const getAll = () => prisma.client.findMany()
+export const getAll = () => prisma.user.findMany()
 
 export const getById = (id: string) =>
-  prisma.client.findUnique({ where: { id } })
+  prisma.user.findUnique({ where: { id } })
 
-export const create = (data) =>
-  prisma.client.create({ data })
+export const create = (data: any) =>
+  prisma.user.create({ data })
 
-export const update = (id: string, data) =>
-  prisma.client.update({ where: { id }, data })
+export const update = (id: string, data: any) =>
+  prisma.user.update({ where: { id }, data })
 
 export const remove = (id: string) =>
-  prisma.client.delete({ where: { id } })
+  prisma.user.delete({ where: { id } })

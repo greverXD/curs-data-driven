@@ -29,7 +29,7 @@ passport.use(
           user = await prisma.user.create({
             data: {
               email,
-              role: 'USER',
+              role: 'USER' as any,
               googleId
             }
           })

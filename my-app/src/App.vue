@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import Header from './widgets/Header.vue'
-import HeroBanner from './widgets/HeroBanner.vue'
-import PopularProducts from './widgets/PopularProducts.vue'
-import Categories from './widgets/Categories.vue'
-import SubscribeBlock from './widgets/SubscriberBlock.vue'
-import Footer from './widgets/Footer.vue'
+import { onMounted } from 'vue'
+import { useAuthStore } from './store/auth'
+
+const auth = useAuthStore()
+
+onMounted(() => {
+  auth.init()
+})
 </script>
 
 <template>

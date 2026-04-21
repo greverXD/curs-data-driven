@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useAuthStore } from '../store/auth'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 const auth = useAuthStore()
 const router = useRouter()
+const isAuth = computed(() => !!auth.token)
 const handleLogout = () => {
   auth.logout()
   router.push('/')
 }
+console.log('HEADER token:', auth.token)
 </script>
 
 <template>
@@ -25,18 +28,17 @@ const handleLogout = () => {
     <div class="flex items-center gap-4 text-xl">
 
       <button class="hover:scale-110 transition">🔍</button>
-  <template v-if="auth.token">
-    <button @click="handleLogout">
-      Выйти
-    </button>
-  </template>
-      <template v-if="!auth.token">
-      <router-link to="/auth">Войти</router-link>
-      </template>
-      <template v-if="!auth.token">
-      <router-link to="/profile">👤</router-link>
-      <button class="hover:scale-110 transition"><router-link to="/cart">🛒</router-link></button>
-      </template>
+<template v-if="isAuth">
+  <button @click="handleLogout">Выйти</button>
+</template>
+
+<template v-else>
+  <router-link to="/auth">Войти</router-link>
+</template>
+<template v-if="isAuth">
+  <router-link to="/profile">👤</router-link>
+  <router-link to="/cart">🛒</router-link>
+</template>
     </div>
   </header>
 </template>
