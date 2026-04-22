@@ -33,3 +33,10 @@ export const verify = async (req: Request, res: Response) => {
 
   res.json(data)
 }
+export const resend = async (req: Request, res: Response) => {
+  const { email } = req.body
+
+  const data = await authService.resend(email)
+
+  res.json(data)
+}

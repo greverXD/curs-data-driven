@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { register } from './api'
+import { register, verify, resendCode } from './api'
 import { useAuthStore } from '../../store/auth'
 import { useRouter } from 'vue-router'
 import validator from 'validator'
@@ -14,11 +14,13 @@ const success = ref('')
 const email = ref('')
 const password = ref('')
 const name = ref('')
+const code = ref('')
+
+const step = ref<'register' | 'verify'>('register')
 
 const emailError = ref('')
 const passwordError = ref('')
 
-// очищаем ошибки при вводе
 watch(email, () => {
   emailError.value = ''
   error.value = ''
@@ -29,7 +31,6 @@ watch(password, () => {
   error.value = ''
 })
 
-// валидация
 const validate = () => {
   emailError.value = ''
   passwordError.value = ''
@@ -49,40 +50,74 @@ const validate = () => {
   return isValid
 }
 
-// регистрация
 const handleRegister = async () => {
-  console.log('CLICK REGISTER')
   error.value = ''
   success.value = ''
 
   if (!validate()) return
 
   try {
-    const res = await register({
+    await register({
       email: email.value,
       password: password.value
     })
 
-    console.log('REGISTER token:', res.data.token)
-
-    store.setAuth(
-      {
-        email: email.value
-      },
-      res.data.token
-    )
-
-    success.value = 'Аккаунт создан 🎉'
-
-    setTimeout(() => {
-      router.push('/')
-    }, 1000)
+    step.value = 'verify'
+    success.value = 'Код отправлен на почту 📩'
 
   } catch (e: any) {
     error.value = e.response?.data?.message || 'Ошибка'
   }
+  step.value = 'verify'   // 👈 сюда
+startTimer()
 }
 
+const handleVerify = async () => {
+  try {
+    const res = await verify({
+      email: email.value,
+      code: code.value
+    })
+
+    store.setAuth(res.data.user, res.data.token)
+    router.push('/')
+
+  } catch (e: any) {
+    error.value = e.response?.data?.message || 'Неверный код'
+  }
+}
+
+
+
+const timer = ref(10)
+const canResend = ref(false)
+
+let interval: any = null
+
+const startTimer = () => {
+  timer.value = 10
+  canResend.value = false
+
+  interval = setInterval(() => {
+    timer.value--
+
+    if (timer.value <= 0) {
+      clearInterval(interval)
+      canResend.value = true
+    }
+  }, 1000)
+}
+
+
+
+const handleResend = async () => {
+  try {
+    await resendCode(email.value)
+    startTimer()
+  } catch (e) {
+    error.value = 'Ошибка при повторной отправке'
+  }
+}
 const emit = defineEmits(['switch'])
 
 const handleGoogleLogin = () => {
@@ -90,21 +125,17 @@ const handleGoogleLogin = () => {
 }
 </script>
 
-<template v-if="step === 'register'">
-  <div class="w-[350px]">
+<template>
+<div class="w-[350px]">
+
+  <!-- 🔥 REGISTER -->
+  <template v-if="step === 'register'">
     <h2 class="text-2xl font-bold mb-6">Регистрация</h2>
 
-    <!-- 🔥 FORM -->
     <form @submit.prevent="handleRegister">
       
-      <!-- NAME -->
-      <input
-        v-model="name"
-        placeholder="Имя"
-        class="w-full border px-3 py-2 mb-3 rounded"
-      />
+      <input v-model="name" placeholder="Имя" class="w-full border px-3 py-2 mb-3 rounded" />
 
-      <!-- EMAIL -->
       <input
         v-model="email"
         placeholder="Email"
@@ -117,7 +148,6 @@ const handleGoogleLogin = () => {
         {{ emailError }}
       </p>
 
-      <!-- PASSWORD -->
       <input
         v-model="password"
         type="password"
@@ -130,56 +160,27 @@ const handleGoogleLogin = () => {
       <p v-if="passwordError" class="text-red-500 text-sm mb-2">
         {{ passwordError }}
       </p>
-      
-      <!-- BUTTON -->
-      <button
-        type="submit"
-        class="w-full bg-black text-white py-2 rounded hover:opacity-90 mt-2"
-      >
+
+      <button type="submit" class="w-full bg-black text-white py-2 rounded hover:opacity-90 mt-2">
         Создать аккаунт
       </button>
 
-      <!-- SUCCESS -->
       <p v-if="success" class="text-green-500 text-sm mt-2">
         {{ success }}
       </p>
 
-      <!-- ERROR -->
       <p v-if="error" class="text-red-500 text-sm mt-2">
         {{ error }}
       </p>
     </form>
+  </template>
 
-    <!-- SOCIAL -->
-    <div class="flex gap-4 mt-4">
-      <button
-        class="flex-1 border py-2 rounded hover:bg-gray-100"
-        @click="handleGoogleLogin"
-      >
-        Google
-      </button>
-      <button class="flex-1 border py-2 rounded hover:bg-gray-100">
-        Instagram
-      </button>
-    </div>
-
-    <p class="mt-4 text-sm">
-      Уже есть аккаунт?
-      <span
-        @click="emit('switch')"
-        class="text-blue-500 cursor-pointer"
-      >
-        Войти
-      </span>
-    </p>
-  </div>
-</template>
-
-<template v-else>
-    <h2 class="text-2xl font-bold mb-4">Подтвердите почту</h2>
+  <!-- 🔥 VERIFY -->
+  <template v-else>
+    <h2 class="text-2xl font-bold mb-6">Подтверждение</h2>
 
     <p class="text-sm text-gray-500 mb-3">
-      Мы отправили код на {{ email }}
+      Код отправлен на {{ email }}
     </p>
 
     <input
@@ -195,18 +196,44 @@ const handleGoogleLogin = () => {
       Подтвердить
     </button>
 
-    <!-- таймер -->
-    <p class="text-sm mt-3 text-gray-500">
-      <span v-if="!canResend">
-        Отправить повторно через {{ timer }} сек
-      </span>
-
-      <span
-        v-else
-        @click="handleResend"
-        class="text-blue-500 cursor-pointer"
-      >
-        Отправить код снова
-      </span>
+    <p v-if="error" class="text-red-500 text-sm mt-2">
+      {{ error }}
     </p>
+
+    <p class="text-sm mt-3 text-gray-500">
+  <span v-if="!canResend">
+    Отправить повторно через {{ timer }} сек
+  </span>
+
+  <span
+    v-else
+    @click="handleResend"
+    class="text-blue-500 cursor-pointer"
+  >
+    Отправить код снова
+  </span>
+</p>
   </template>
+
+  <!-- SOCIAL -->
+  <div class="flex gap-4 mt-4">
+    <button
+      class="flex-1 border py-2 rounded hover:bg-gray-100"
+      @click="handleGoogleLogin"
+    >
+      Google
+    </button>
+    <button class="flex-1 border py-2 rounded hover:bg-gray-100">
+      Instagram
+    </button>
+  </div>
+
+  <p class="mt-4 text-sm">
+    Уже есть аккаунт?
+    <span @click="emit('switch')" class="text-blue-500 cursor-pointer">
+      Войти
+    </span>
+  </p>
+
+</div>
+</template>
