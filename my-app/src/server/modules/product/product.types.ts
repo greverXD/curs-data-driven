@@ -1,13 +1,16 @@
+export interface Variant {
+  id: string
+  size: string
+  price: number
+  image: string
+}
+
 export interface Product {
   id: string
   title: string
-  price: number
   description: string
-  image: string
   category: string
-  stock: number
-  discount?: number
-  createdAt: Date
+  variants: Variant[]
 }
 
 export interface CreateProductDto {

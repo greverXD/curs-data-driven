@@ -4,6 +4,7 @@ import prisma from '../../config/db'
 import validator from 'validator'
 import { sendEmail } from './mail.service'
 export const register = async (email: string, password: string) => {
+  
   if (!validator.isEmail(email)) {
     throw new Error('Некорректный email')
   }
@@ -25,10 +26,11 @@ if (existingUser) {
     })
 
     await sendEmail(email, code)
-
-    return {
-      message: 'Код отправлен повторно'
-    }
+    console.log('📨 REGISTER CODE:', code)
+return {
+  isResend: true,
+  message: 'Код отправлен повторно'
+}
   }
 
 
@@ -38,13 +40,19 @@ if (existingUser) {
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  const user = await prisma.user.create({
-    data: {
-      email,
-      password: hashedPassword,
-      role: 'USER'
-    }
-  })
+const code = Math.floor(100000 + Math.random() * 900000).toString()
+
+const user = await prisma.user.create({
+  data: {
+    email,
+    password: hashedPassword,
+    role: 'USER',
+    verifyCode: code,
+    isVerified: false
+  }
+})
+
+await sendEmail(email, code)
 
   const token = jwt.sign(
     { userId: user.id, role: user.role },
@@ -60,6 +68,7 @@ if (existingUser) {
       role: user.role
     }
   }
+  
 }
 export const login = async (email: string, password: string) => {
   const user = await prisma.user.findUnique({
@@ -106,13 +115,30 @@ export const login = async (email: string, password: string) => {
 
 
 export const verify = async (email: string, code: string) => {
+  console.log('📩 VERIFY REQUEST:')
+  console.log('email from frontend:', email)
+  console.log('code from frontend:', code)
+
   const user = await prisma.user.findUnique({
     where: { email }
   })
 
-  if (!user || user.verifyCode !== code) {
+  console.log('👤 USER FROM DB:', user)
+
+  if (!user) {
+    console.log('❌ USER NOT FOUND')
+    throw new Error('Пользователь не найден')
+  }
+
+  console.log('🔐 DB CODE:', user.verifyCode)
+  console.log('🔐 FRONT CODE:', code)
+
+  if (user.verifyCode !== code.trim()) {
+    console.log('❌ CODE MISMATCH')
     throw new Error('Неверный код')
   }
+
+  console.log('✅ CODE MATCH')
 
   const updated = await prisma.user.update({
     where: { email },
@@ -156,8 +182,9 @@ export const resend = async (email: string) => {
     where: { email },
     data: { verifyCode: code }
   })
-
+console.log('🔁 RESEND CODE:', code)
   await sendEmail(email, code)
 
   return { message: 'Код отправлен повторно' }
+  
 }

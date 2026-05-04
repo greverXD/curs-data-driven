@@ -10,8 +10,7 @@ const app = createApp(App)
 const pinia = createPinia()
 app.use(pinia)
 
-const auth = useAuthStore()
-auth.init()
+
 
 app.use(router)
 

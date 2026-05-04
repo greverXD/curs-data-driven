@@ -1,11 +1,20 @@
 import prisma from '../../config/db'
 import { Prisma } from '@prisma/client'
 export const getAll = async () => {
-  return prisma.product.findMany()
+  return prisma.product.findMany({
+    include: {
+      variants: true
+    }
+  })
 }
 
 export const getById = async (id: string) => {
-  return prisma.product.findUnique({ where: { id } })
+  return prisma.product.findUnique({
+    where: { id },
+    include: {
+      variants: true
+    }
+  })
 }
 
 export const create = async (data: Prisma.ProductCreateInput) => {

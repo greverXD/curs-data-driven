@@ -15,7 +15,7 @@ const email = ref('')
 const password = ref('')
 const name = ref('')
 const code = ref('')
-
+const loading = ref(false)
 const step = ref<'register' | 'verify'>('register')
 
 const emailError = ref('')
@@ -51,25 +51,35 @@ const validate = () => {
 }
 
 const handleRegister = async () => {
+  if (loading.value) return 
+
   error.value = ''
   success.value = ''
 
   if (!validate()) return
 
+  loading.value = true
+
   try {
-    await register({
+    const res = await register({
       email: email.value,
       password: password.value
     })
 
+    if (res.data.isResend) {
+      success.value = 'Аккаунт уже существует. Код отправлен повторно 📩'
+    } else {
+      success.value = 'Проверьте почту 📩'
+    }
+
     step.value = 'verify'
-    success.value = 'Код отправлен на почту 📩'
+    startTimer()
 
   } catch (e: any) {
     error.value = e.response?.data?.message || 'Ошибка'
+  } finally {
+    loading.value = false
   }
-  step.value = 'verify'   // 👈 сюда
-startTimer()
 }
 
 const handleVerify = async () => {

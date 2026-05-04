@@ -10,47 +10,72 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  email     String @unique
-  password  String?
-  googleId  String? @unique
-  role      String @default("USER")
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String?
+  googleId String? @unique
+  role     Role    @default(USER)
 
   isVerified Boolean @default(false)
   verifyCode String?
 
-  orders    Order[]
+  createdAt DateTime @default(now())
+
+  orders          Order[]
+  analyticsEvents AnalyticsEvent[]
 }
 
 model Product {
-  id          String @id @default(uuid())
+  id          String    @id @default(uuid())
   title       String
-  price       Float
   description String?
+  category    String
+  variants    Variant[]
 
-  items       OrderItem[]
+  items OrderItem[]
+}
+
+model Variant {
+  id    String  @id @default(uuid())
+  size  String
+  color String?
+  price Float
+  image String
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
 }
 
 model Order {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   userId    String
   total     Float
-  status    String      @default("PENDING")
-  createdAt DateTime    @default(now())
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
 
-  user      User        @relation(fields: [userId], references: [id])
-  items     OrderItem[]
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
 }
 
 model OrderItem {
-  id        String  @id @default(uuid())
+  id        String @id @default(uuid())
   orderId   String
   productId String
   quantity  Int
   price     Float
 
-  order     Order   @relation(fields: [orderId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model AnalyticsEvent {
+  id        Int      @id @default(autoincrement())
+  userId    String?
+  type      String
+  page      String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
 }
 
 enum Role {

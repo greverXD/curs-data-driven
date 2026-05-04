@@ -46,9 +46,10 @@ const categories = [
     <div>
       <h3 class="mb-2">Цена</h3>
 
-      <select
+        <select
         class="w-full border px-2 py-1 rounded"
         @change="onSortChange"
+        :value="sort || ''"
       >
         <option value="">Без сортировки</option>
         <option value="asc">По возрастанию</option>

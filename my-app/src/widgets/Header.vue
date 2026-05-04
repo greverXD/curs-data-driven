@@ -2,6 +2,9 @@
 import { useAuthStore } from '../store/auth'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
+import { useCartStore } from '../store/cart'
+import {watch} from "vue"
+const cart = useCartStore()
 const auth = useAuthStore()
 const router = useRouter()
 const isAuth = computed(() => !!auth.token)
@@ -10,6 +13,12 @@ const handleLogout = () => {
   router.push('/')
 }
 console.log('HEADER token:', auth.token)
+watch(
+  () => cart.isOpen,
+  (val) => {
+    document.body.style.overflow = val ? 'hidden' : 'auto'
+  }
+)
 </script>
 
 <template>
@@ -36,8 +45,10 @@ console.log('HEADER token:', auth.token)
   <router-link to="/auth">Войти</router-link>
 </template>
 <template v-if="isAuth">
-  <router-link to="/profile">👤</router-link>
-  <router-link to="/cart">🛒</router-link>
+  <router-link to="/account">👤</router-link>
+  <button @click="cart.openCart()">
+    🛒
+  </button>
 </template>
     </div>
   </header>

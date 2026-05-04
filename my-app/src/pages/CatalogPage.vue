@@ -9,7 +9,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const selectedCategory = ref(
-  (route.query.category as string)
+  (route.query.category as string) || 'Все'
 )
 
 const sortOrder = ref<'asc' | 'desc' | null>(null)
@@ -21,7 +21,7 @@ const sortOrder = ref<'asc' | 'desc' | null>(null)
   <main class="px-10 py-10">
     <h1 class="text-3xl font-bold mb-6">Каталог</h1>
 
-    <div class="grid grid-cols-[250px_1fr] gap-10">
+    <div class="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-10">
       
       <CatalogFilters
         v-model:category="selectedCategory"

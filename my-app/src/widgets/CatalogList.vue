@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import ProductCard from '../entities/product/ProductCard.vue'
 
 const props = defineProps<{
@@ -7,18 +7,23 @@ const props = defineProps<{
   sort: 'asc' | 'desc' | null
 }>()
 
-const products = [
-  { id: '1', title: 'Nike Air', price: 120, category: 'Кроссовки', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff' },
-  { id: '2', title: 'Футболка', price: 50, category: 'Футболки', image: 'https://images.unsplash.com/photo-1528701800489-20be3c1ea4c4' },
-  { id: '3', title: 'Куртка', price: 200, category: 'Куртки', image: 'https://images.unsplash.com/photo-1519741497674-611481863552' }
-]
+const products = ref<any[]>([])
 
-// 👇 фильтрация + сортировка
-const filteredProducts = computed(() => {
-  let result = [...products]
+onMounted(async () => {
+  const res = await fetch('http://localhost:3000/api/products')
+  products.value = await res.json()
+})
+
+// 👇 ВСЯ логика в одном месте
+const finalProducts = computed(() => {
+  let result = products.value.map(p => ({
+    ...p,
+    price: p.variants?.[0]?.price || 0,
+    image: p.variants?.[0]?.image || ''
+  }))
 
   // фильтр
-  if (props.category !== 'Все') {
+  if (props.category && props.category !== 'Все') {
     result = result.filter(p => p.category === props.category)
   }
 
@@ -36,9 +41,9 @@ const filteredProducts = computed(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <ProductCard
-      v-for="product in filteredProducts"
+      v-for="product in finalProducts"
       :key="product.id"
       v-bind="product"
     />
