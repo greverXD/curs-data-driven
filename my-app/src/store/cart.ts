@@ -24,7 +24,11 @@ export const useCartStore = defineStore('cart', {
         })
       }
 
-      trackEvent({ type: 'ADD_TO_CART' })
+        trackEvent({
+    type: 'ADD_TO_CART',
+    productId: product.id,
+    page: window.location.pathname
+  })
     },
 
     removeFromCart(id: string) {
@@ -57,3 +61,4 @@ export const useCartStore = defineStore('cart', {
     }
   }
 })
+

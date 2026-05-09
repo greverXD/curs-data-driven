@@ -1,6 +1,42 @@
 <script setup lang="ts">
 import { useCartStore } from '../store/cart';
+import { ref } from 'vue'
+import api from '../api/axios'
+const customerName = ref('')
+const phone = ref('')
+const address = ref('')
+const comment = ref('')
+const paymentMethod = ref('CARD')
 
+const success = ref(false)
+const loading = ref(false)
+const checkout = async () => {
+  try {
+    loading.value = true
+
+    await api.post('/orders', {
+      customerName: customerName.value,
+      phone: phone.value,
+      address: address.value,
+      comment: comment.value,
+      paymentMethod: paymentMethod.value,
+
+      items: cart.items.map(item => ({
+        variantId: item.id,
+        quantity: item.quantity
+      }))
+    })
+
+    success.value = true
+
+    cart.clearCart()
+
+  } catch (e) {
+    console.error(e)
+  } finally {
+    loading.value = false
+  }
+}
 const cart = useCartStore()
 </script>
 
@@ -23,33 +59,126 @@ const cart = useCartStore()
       <button @click="cart.closeCart()">✕</button>
     </div>
 
-    <!-- Items -->
     <div class="p-4 flex-1 overflow-y-auto">
-      <div v-if="cart.items.length === 0">
-        Корзина пуста
-      </div>
+  <!-- ❌ пусто -->
+  <div v-if="cart.items.length === 0" class="text-center text-gray-400">
+    Корзина пуста
+  </div>
 
-      <div
-        v-for="item in cart.items"
-        :key="item.id"
-        class="flex justify-between mb-4"
-      >
-        <div>
-          <p>{{ item.title }}</p>
-          <p class="text-sm text-gray-500">{{ item.price }} ₽</p>
-        </div>
+  <!-- ✅ товары -->
+  <div
+    v-for="item in cart.items"
+    :key="item.id"
+    class="flex gap-4 mb-4 border-b pb-4"
+  >
+    <!-- 📸 Картинка -->
+    <img
+      :src="'http://localhost:3000' + item.image"
+      class="w-20 h-20 object-cover rounded"
+    />
 
-        <button @click="cart.removeFromCart(item.id)">✕</button>
+    <!-- 📦 Инфа -->
+    <div class="flex-1">
+      <p class="font-semibold">{{ item.title }}</p>
+
+      <p class="text-sm text-gray-500">
+        {{ item.price }} ₽ × {{ item.quantity }}
+      </p>
+
+      <!-- ➕➖ количество -->
+      <div class="flex items-center gap-2 mt-2">
+        <button
+          @click="item.quantity--"
+          class="px-2 border rounded"
+        >
+          -
+        </button>
+
+        <span>{{ item.quantity }}</span>
+
+        <button
+          @click="item.quantity++"
+          class="px-2 border rounded"
+        >
+          +
+        </button>
       </div>
     </div>
+
+    <!-- ❤️ лайк -->
+    <button @click="cart.toggleFavorite(item.id)" class="text-xl">
+      <span v-if="item.isFavorite">❤️</span>
+      <span v-else>🤍</span>
+    </button>
+
+    <!-- ❌ удалить -->
+    <button @click="cart.removeFromCart(item.id)">✕</button>
+  </div>
+</div>
 
     <!-- Footer -->
     <div class="p-4 border-t">
       <p class="mb-2">Итого: {{ cart.totalPrice }} ₽</p>
+      <div class="space-y-3 mb-4">
 
-      <button class="w-full bg-black text-white p-3">
-        Оформить заказ
-      </button>
+  <input
+    v-model="customerName"
+    placeholder="Ваше имя"
+    class="w-full border p-3 rounded"
+  />
+
+  <input
+    v-model="phone"
+    placeholder="Телефон"
+    class="w-full border p-3 rounded"
+  />
+
+  <input
+    v-model="address"
+    placeholder="Адрес доставки"
+    class="w-full border p-3 rounded"
+  />
+
+  <textarea
+    v-model="comment"
+    placeholder="Комментарий"
+    class="w-full border p-3 rounded"
+  />
+
+  <select
+    v-model="paymentMethod"
+    class="w-full border p-3 rounded"
+  >
+    <option value="CARD">
+      💳 Карта
+    </option>
+
+    <option value="CASH">
+      💵 Наличными
+    </option>
+  </select>
+
+</div>
+<button
+  @click="checkout"
+  :disabled="loading"
+  class="w-full bg-black text-white p-3 rounded"
+>
+  <span v-if="loading">
+    Оформление...
+  </span>
+
+  <span v-else>
+    Оформить заказ
+  </span>
+</button>
+
+<p
+  v-if="success"
+  class="text-green-600 text-center mt-3"
+>
+  Заказ успешно оформлен
+</p>
     </div>
     
   </div>

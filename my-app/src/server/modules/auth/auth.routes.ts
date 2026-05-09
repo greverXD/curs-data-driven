@@ -24,15 +24,14 @@ router.get(
       return res.redirect('http://localhost:5173/login?error=google_auth_failed')
     }
 
-    const user = req.user as any
+const data = req.user as any
 
-    const token = jwt.sign(
-      { userId: user.id, role: user.role },
-      process.env.JWT_SECRET!,
-      { expiresIn: '7d' }
-    )
+const user = data.user
+const token = data.token
 
-    res.redirect(`http://localhost:5173/auth-success?token=${token}`)
+res.redirect(
+  `http://localhost:5173/auth-success?token=${token}&role=${user.role}&email=${user.email}&id=${user.id}`
+)
   }
 )
 

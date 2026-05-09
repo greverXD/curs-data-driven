@@ -12,7 +12,10 @@ import ContactsPage from '../pages/ContactsPage.vue'
 import TrackOrderPage from '../pages/TrackOrderPage.vue'
 import CartPage from '../pages/CartPage.vue'
 import AuthSuccess from '../pages/AuthSuccess.vue'
-import AdminDashboard from '../pages/admin/AdminDashboard.vue'
+
+import AdminLayout from '../pages/admin/AdminLayout.vue'
+import DashboardPage from '../pages/admin/DashboardPage.vue'
+
 import AccountLayout from '../pages/AccountLayout.vue'
 import AddressesTab from '../widgets/account/AddressesTab.vue'
 import FavoritesTab from '../widgets/account/FavoritesTab.vue'
@@ -34,7 +37,7 @@ export const router = createRouter({
     { path: '/contact', component: ContactsPage },
     { path: '/track', component: TrackOrderPage },
     { path: '/auth-success', component: AuthSuccess },
-    { path: '/admin', component: AdminDashboard },
+    
 
     {
       path: '/account',
@@ -47,19 +50,29 @@ export const router = createRouter({
         { path: 'payment', name: 'payment', component: PaymentTab },
         { path: 'settings', name: 'settings', component: SettingsTab }
       ]
+    },
+    {
+  path: '/admin',
+  component: AdminLayout,
+  children: [
+    {
+      path: '',
+      component: DashboardPage
     }
   ]
+}
+  ]
 })
-// router.beforeEach((to, from, next) => {
-//   const authStore = useAuthStore()
-//   const user = authStore.user
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  const user = authStore.user
+  console.log(user)
+  if (to.path.startsWith('/admin') && user?.role !== 'ADMIN') {
+    return next('/')
+  }
 
-//   if (to.path.startsWith('/admin') && user?.role !== 'ADMIN') {
-//     return next('/')
-//   }
-
-//   next()
-// })
+  next()
+})
 
 
 

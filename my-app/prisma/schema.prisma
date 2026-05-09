@@ -48,9 +48,20 @@ model Variant {
 
 model Order {
   id        String   @id @default(uuid())
+
   userId    String
+
   total     Float
+
   status    String   @default("PENDING")
+
+  customerName String
+  phone        String
+  address      String
+  comment      String?
+
+  paymentMethod String
+
   createdAt DateTime @default(now())
 
   user  User        @relation(fields: [userId], references: [id])
@@ -70,9 +81,18 @@ model OrderItem {
 
 model AnalyticsEvent {
   id        Int      @id @default(autoincrement())
+
   userId    String?
+
   type      String
   page      String?
+
+  productId String?
+
+  referrer  String?
+  userAgent String?
+  ipAddress String?
+
   createdAt DateTime @default(now())
 
   user User? @relation(fields: [userId], references: [id])

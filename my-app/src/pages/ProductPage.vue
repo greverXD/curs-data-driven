@@ -6,7 +6,7 @@ import Footer from '../widgets/Footer.vue'
 import ProductGallery from '../entities/product/ProductGallery.vue'
 import ProductInfo from '../entities/product/ProductInfo.vue'
 import { useCartStore } from '../store/cart'
-
+import { trackEvent } from '../lib/analytics'
 const cart = useCartStore()
 const route = useRoute()
 const productId = route.params.id as string
@@ -14,7 +14,14 @@ const productId = route.params.id as string
 const product = ref<any>(null)
 const selectedSize = ref<string | null>(null)
 const addToCart = () => {
-  cart.addToCart(product.value)
+  if (!selectedVariant.value) {
+    alert('Выберите размер')
+    return
+  }
+
+  cart.addToCart(product.value, selectedVariant.value)
+
+
 }
 onMounted(async () => {
   try {
@@ -25,12 +32,15 @@ onMounted(async () => {
     }
 
     const data = await res.json()
-
+trackEvent({
+  type: 'PRODUCT_VIEW',
+  productId: data.id,
+  page: window.location.pathname
+})
     console.log('PRODUCT:', data)
 
     product.value = data
-        console.log('PRODUCT:', data)
-    console.log('VARIANTS:', data?.variants)
+
     if (data?.variants?.length) {
       selectedSize.value = data.variants[0].size
     }
@@ -38,6 +48,7 @@ onMounted(async () => {
   } catch (e) {
     console.error(e)
   }
+  
 })
 
 // выбранный вариант

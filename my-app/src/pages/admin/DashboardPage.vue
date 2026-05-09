@@ -1,0 +1,73 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import axios from '../../api/axios'
+
+import StatsCards from '../../widgets/admin/StatsCards.vue'
+import RevenueChart from '../../widgets/admin/RevenueChart.vue'
+import RecentOrders from '../../widgets/admin/RecentOrders.vue'
+import TopProducts from '../../widgets/admin/TopProducts.vue'
+
+const data = ref<any>(null)
+const loading = ref(true)
+
+onMounted(async () => {
+  try {
+    const res = await axios.get('/analytics/dashboard')
+
+    data.value = res.data
+  } catch (e) {
+    console.error(e)
+  } finally {
+    loading.value = false
+  }
+})
+</script>
+
+<template>
+  <div v-if="loading">
+    Загрузка dashboard...
+  </div>
+
+  <div v-else-if="data">
+    
+    <!-- Stats -->
+    <StatsCards />
+
+    <!-- Charts -->
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div class="bg-white rounded-2xl p-6 min-h-[350px] border border-gray-100">
+        <h3 class="text-xl font-bold mb-4">
+          Выручка по дням
+        </h3>
+
+        <RevenueChart :data="data.orders" />
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 min-h-[350px] border border-gray-100">
+        <h3 class="text-xl font-bold mb-4">
+          Заказы по дням
+        </h3>
+      </div>
+    </div>
+
+    <!-- Bottom Blocks -->
+    <div class="grid grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 min-h-[300px]">
+        <h3 class="text-xl font-bold mb-4">
+          Популярные товары
+        </h3>
+
+        <TopProducts :products="data.topProducts" />
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-gray-100 min-h-[300px]">
+        <h3 class="text-xl font-bold mb-4">
+          Последние заказы
+        </h3>
+
+        <RecentOrders :orders="data.recentOrders" />
+      </div>
+    </div>
+
+  </div>
+</template>

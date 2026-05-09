@@ -1,12 +1,10 @@
 import axios from 'axios'
 
-const instance = axios.create({
-  baseURL: 'http://localhost:3000/api', // 👈 твой backend
-  withCredentials: true
+const api = axios.create({
+  baseURL: 'http://localhost:3000/api'
 })
 
-// 🔐 добавляем токен автоматически
-instance.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
 
   if (token) {
@@ -16,4 +14,4 @@ instance.interceptors.request.use((config) => {
   return config
 })
 
-export default instance
+export default api

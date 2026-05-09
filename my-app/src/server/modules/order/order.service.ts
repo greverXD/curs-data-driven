@@ -3,6 +3,13 @@ import { CreateOrderDto } from './order.types'
 
 // 🛒 Создание заказа
 export const createOrder = async (userId: string, data: CreateOrderDto) => {
+  const {
+  customerName,
+  phone,
+  address,
+  comment,
+  paymentMethod
+} = data
   let total = 0
 
   const itemsData = []
@@ -28,18 +35,32 @@ export const createOrder = async (userId: string, data: CreateOrderDto) => {
   }
 
   // 🧾 создаём заказ
-  return prisma.order.create({
-    data: {
-      userId,
-      total,
-      items: {
-        create: itemsData
-      }
-    },
-    include: {
-      items: true
+const order = await prisma.order.create({
+data: {
+  userId,
+
+  customerName,
+  phone,
+  address,
+  comment,
+  paymentMethod,
+
+  total,
+    items: {
+      create: itemsData
     }
-  })
+  },
+  include: {
+    items: true
+  }
+})
+await prisma.analyticsEvent.create({
+  data: {
+    type: 'ORDER_CREATED',
+    userId
+  }
+})
+return order
 }
 
 // 📦 Заказы пользователя

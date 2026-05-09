@@ -37,7 +37,7 @@ const sizes = computed(() =>
         :key="v.id"
         @click="$emit('selectSize', v.size)"
         class="border px-3 py-1"
-        :class="selectedSize === v.size && 'bg-black text-white'"
+         :class="v.size === 'S' ? 'bg-black text-white' : ''"
       >
         {{ v.size }}
       </button>

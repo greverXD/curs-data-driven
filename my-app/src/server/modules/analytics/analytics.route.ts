@@ -8,13 +8,21 @@ import { PrismaClient } from '@prisma/client'
 export const prisma = new PrismaClient()
 const router = Router()
 router.post('/event', async (req, res) => {
-  const { type, page } = req.body
+  const {
+    type,
+    page,
+    productId
+  } = req.body
 
   await prisma.analyticsEvent.create({
     data: {
       type,
       page,
-    //   userId: req.user?.id // если авторизован
+      productId,
+
+      userAgent: req.headers['user-agent'] as string,
+
+      userId: (req as any).user?.userId
     }
   })
 

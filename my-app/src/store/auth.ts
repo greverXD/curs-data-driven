@@ -11,22 +11,32 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   actions: {
-    init() {
-      const token = localStorage.getItem('token')
-      if (token) {
-        this.token = token
-      }
-    },
-    setAuth(user: any, token: string) {
-      this.user = user
-      this.token = token
-      localStorage.setItem('token', token)
-    },
+init() {
+  const token = localStorage.getItem('token')
+  const user = localStorage.getItem('user')
 
-    logout() {
-      this.user = null
-      this.token = ''
-      localStorage.removeItem('token')
-    }
+  if (token) {
+    this.token = token
+  }
+
+  if (user) {
+    this.user = JSON.parse(user)
+  }
+},
+setAuth(user: any, token: string) {
+  this.user = user
+  this.token = token
+
+  localStorage.setItem('token', token)
+  localStorage.setItem('user', JSON.stringify(user))
+},
+
+logout() {
+  this.user = null
+  this.token = ''
+
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+}
   }
 })

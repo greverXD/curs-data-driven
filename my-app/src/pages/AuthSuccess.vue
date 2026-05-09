@@ -12,6 +12,9 @@ const error = ref('')
 
 onMounted(() => {
   const token = route.query.token as string
+  const role = route.query.role as string
+  const email = route.query.email as string
+  const id = route.query.id as string
 
   if (!token) {
     error.value = 'Ошибка авторизации'
@@ -19,8 +22,14 @@ onMounted(() => {
     return
   }
 
-  localStorage.setItem('token', token)
-  auth.setAuth(true, token)
+  auth.setAuth(
+    {
+      id,
+      email,
+      role
+    },
+    token
+  )
 
   setTimeout(() => {
     router.push('/')

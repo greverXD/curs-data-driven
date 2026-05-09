@@ -14,7 +14,13 @@ export interface Order {
 }
 
 export interface CreateOrderDto {
-items: {
+  customerName: string
+  phone: string
+  address: string
+  comment?: string
+  paymentMethod: string
+
+  items: {
     variantId: string
     quantity: number
   }[]

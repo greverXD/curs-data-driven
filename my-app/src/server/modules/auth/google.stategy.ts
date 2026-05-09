@@ -14,7 +14,7 @@ passport.use(
       try {
         const email = profile.emails?.[0]?.value
         const googleId = profile.id
-
+        
         if (!email) {
           return done(new Error('No email'), undefined)
         }
@@ -36,11 +36,14 @@ passport.use(
         }
 
         // 🔑 генерим JWT
-        const token = jwt.sign(
-          { userId: user.id },
-          process.env.JWT_SECRET!,
-          { expiresIn: '7d' }
-        )
+const token = jwt.sign(
+  {
+    userId: user.id,
+    role: user.role
+  },
+  process.env.JWT_SECRET!,
+  { expiresIn: '7d' }
+)
 
         // 🚀 отдаём в callback
         done(null, { user, token })

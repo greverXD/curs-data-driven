@@ -24,7 +24,7 @@ export const getMyOrders = async (req:any, res:Response, next:NextFunction) => {
 
 export const getById = async (req:any, res:Response, next:NextFunction) => {
   try {
-    const order = await orderService.getById(req.params.id)
+    const order = await orderService.getById(req.params.id,req.user.userId)
     res.json(order)
   } catch (e) {
     next(e)
