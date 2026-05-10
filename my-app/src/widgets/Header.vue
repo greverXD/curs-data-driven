@@ -29,8 +29,13 @@ watch(
       <nav class="flex gap-4 text-gray-600">
         <router-link to="/">Главная</router-link>
         <router-link to="/catalog">Каталог</router-link>
-        <a href="#">Новинки</a>
-        <a href="#">Распродажа</a>
+        <router-link to="/new">
+  Новинки
+</router-link>
+
+<router-link to="/sale">
+  Распродажа
+</router-link>
       </nav>
     </div>
 

@@ -15,6 +15,12 @@ import AuthSuccess from '../pages/AuthSuccess.vue'
 
 import AdminLayout from '../pages/admin/AdminLayout.vue'
 import DashboardPage from '../pages/admin/DashboardPage.vue'
+import MarketPage from '../pages/admin/MarketPage.vue'
+import OrdersAdminPage from '../pages/admin/OrdersAdminPage.vue'
+import CustomersPage from '../pages/admin/CustomersPage.vue'
+import GeographyPage from '../pages/admin/GeographyPage.vue'
+import AnalyticsPage from '../pages/admin/AnalyticsPage.vue'
+import ProductsAdminPage from '../pages/admin/ProductsAdminPage.vue'
 
 import AccountLayout from '../pages/AccountLayout.vue'
 import AddressesTab from '../widgets/account/AddressesTab.vue'
@@ -23,6 +29,9 @@ import OrdersTab from '../widgets/account/OrdersTab.vue'
 import PaymentTab from '../widgets/account/PaymentTab.vue'
 import ProfileTab from '../widgets/account/ProfileTab.vue'
 import SettingsTab from '../widgets/account/SettingsTab.vue'
+import NewPage from '../pages/NewPage.vue'
+import SalePage from '../pages/SalePage.vue'
+
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -37,7 +46,11 @@ export const router = createRouter({
     { path: '/contact', component: ContactsPage },
     { path: '/track', component: TrackOrderPage },
     { path: '/auth-success', component: AuthSuccess },
-    
+    {path: '/new',component: NewPage},
+{
+  path: '/sale',
+  component: SalePage
+},
 
     {
       path: '/account',
@@ -58,7 +71,31 @@ export const router = createRouter({
     {
       path: '',
       component: DashboardPage
-    }
+    },
+    {
+  path: 'market',
+  component: MarketPage
+},
+{
+  path: 'orders',
+  component: OrdersAdminPage
+},
+{
+  path: 'customers',
+  component: CustomersPage
+},
+{
+  path: 'geography',
+  component: GeographyPage
+},
+{
+  path: 'analytics',
+  component: AnalyticsPage
+},
+{
+  path: 'products',
+  component: ProductsAdminPage
+}
   ]
 }
   ]

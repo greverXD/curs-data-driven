@@ -1,32 +1,61 @@
 <script setup lang="ts">
-const stats = [
+const props = defineProps<{
+  stats: {
+    totalUsers: number
+    totalOrders: number
+    totalVisits: number
+    revenue: number
+  }
+
+  funnel: {
+    pageViews: number
+    productViews: number
+    addToCart: number
+    orders: number
+  }
+}>()
+
+const cards = [
   {
     title: 'Выручка',
-    value: '₽ 245 000'
+    value: `₽ ${props.stats.revenue.toLocaleString()}`
   },
   {
     title: 'Заказы',
-    value: '1 245'
+    value: props.stats.totalOrders.toLocaleString()
   },
   {
     title: 'Пользователи',
-    value: '8 421'
+    value: props.stats.totalUsers.toLocaleString()
   },
   {
     title: 'Посещения',
-    value: '32 102'
+    value: props.stats.totalVisits.toLocaleString()
+  },
+  {
+    title: 'Просмотры товаров',
+    value: props.funnel.productViews.toLocaleString()
+  },
+  {
+    title: 'Добавлено в корзину',
+    value: props.funnel.addToCart.toLocaleString()
+  },
+  {
+    title: 'Оформлено заказов',
+    value: props.funnel.orders.toLocaleString()
   }
 ]
 </script>
 
 <template>
   <div class="grid grid-cols-4 gap-4 mb-6">
+
     <div
-      v-for="item in stats"
+      v-for="item in cards"
       :key="item.title"
       class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100"
     >
-      <p class="text-gray-400 mb-2">
+      <p class="text-gray-400 mb-2 text-sm">
         {{ item.title }}
       </p>
 
@@ -34,5 +63,6 @@ const stats = [
         {{ item.value }}
       </h3>
     </div>
+
   </div>
 </template>

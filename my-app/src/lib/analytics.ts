@@ -6,5 +6,11 @@ export const trackEvent = (event: {
   productId?: string
 }) => {
   
-  api.post('/analytics/event', event)
+  if (
+  window.location.pathname.startsWith('/admin')
+) {
+  return
+}
+
+api.post('/analytics/event', event)
 }

@@ -5,7 +5,15 @@ import { authMiddleware } from '../../middlewares/auth.middleware'
 const router = Router()
 
 router.post('/', authMiddleware, orderController.create)
+
 router.get('/my', authMiddleware, orderController.getMyOrders)
+
+router.get(
+  '/admin/all',
+  authMiddleware,
+  orderController.getAll
+)
+
 router.get('/:id', authMiddleware, orderController.getById)
 
 export default router

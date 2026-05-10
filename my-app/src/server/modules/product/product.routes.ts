@@ -5,7 +5,11 @@ import { roleMiddleware } from '../../middlewares/role.middleware'
 
 const router = Router()
 router.get('/', productController.getAll)
+router.get('/popular',productController.getPopular)
+router.get('/new', productController.getNew)
+router.get('/sale', productController.getSale)
 router.get('/:id', productController.getById)
+
 
 router.post(
   '/',

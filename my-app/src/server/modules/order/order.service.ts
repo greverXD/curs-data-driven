@@ -27,11 +27,15 @@ export const createOrder = async (userId: string, data: CreateOrderDto) => {
     const itemTotal = variant.price * item.quantity
     total += itemTotal
 
-    itemsData.push({
-      productId: variant.productId,
-      quantity: item.quantity,
-      price: variant.price
-    })
+itemsData.push({
+  productId: variant.productId,
+
+  variantId: variant.id,
+
+  quantity: item.quantity,
+
+  price: variant.price
+})
   }
 
   // 🧾 создаём заказ
@@ -99,4 +103,55 @@ export const getById = async (id: string, userId: string) => {
   }
 
   return order
+  
+}
+export const getAllOrders = async (
+  status?: string,
+  page = 1,
+  limit = 5
+) => {
+  const skip = (page - 1) * limit
+
+  const where = status
+    ? {
+        status
+      }
+    : {}
+
+  const orders = await prisma.order.findMany({
+    where,
+
+    skip,
+
+    take: limit,
+
+    include: {
+      user: true,
+
+      items: {
+        include: {
+          product: true,
+          variant: true
+        }
+      }
+    },
+
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
+
+  const total = await prisma.order.count({
+    where
+  })
+
+  return {
+    orders,
+
+    total,
+
+    totalPages: Math.ceil(total / limit),
+
+    currentPage: page
+  }
 }

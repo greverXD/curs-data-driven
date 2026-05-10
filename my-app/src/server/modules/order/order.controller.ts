@@ -30,3 +30,22 @@ export const getById = async (req:any, res:Response, next:NextFunction) => {
     next(e)
   }
 }
+export const getAll = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+const orders = await orderService.getAllOrders(
+  req.query.status as string,
+
+  Number(req.query.page) || 1,
+
+  Number(req.query.limit) || 5
+)
+
+    res.json(orders)
+  } catch (e) {
+    next(e)
+  }
+}

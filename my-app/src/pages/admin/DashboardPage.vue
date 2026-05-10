@@ -31,8 +31,53 @@ onMounted(async () => {
   <div v-else-if="data">
     
     <!-- Stats -->
-    <StatsCards />
+    <StatsCards
+  :stats="data.stats"
+  :funnel="data.funnel"
+/>
+    <div class="grid grid-cols-4 gap-4 mb-6">
 
+  <div class="bg-white p-6 rounded-2xl border">
+    <p class="text-gray-500 text-sm">
+      PAGE VIEW
+    </p>
+
+    <h2 class="text-3xl font-bold">
+      {{ data.funnel.pageViews }}
+    </h2>
+  </div>
+
+  <div class="bg-white p-6 rounded-2xl border">
+    <p class="text-gray-500 text-sm">
+      PRODUCT VIEW
+    </p>
+
+    <h2 class="text-3xl font-bold">
+      {{ data.funnel.productViews }}
+    </h2>
+  </div>
+
+  <div class="bg-white p-6 rounded-2xl border">
+    <p class="text-gray-500 text-sm">
+      ADD TO CART
+    </p>
+
+    <h2 class="text-3xl font-bold">
+      {{ data.funnel.addToCart }}
+    </h2>
+  </div>
+
+  <div class="bg-white p-6 rounded-2xl border">
+    <p class="text-gray-500 text-sm">
+      ORDERS
+    </p>
+
+    <h2 class="text-3xl font-bold">
+      {{ data.funnel.orders }}
+    </h2>
+  </div>
+
+</div>
     <!-- Charts -->
     <div class="grid grid-cols-2 gap-6 mb-6">
       <div class="bg-white rounded-2xl p-6 min-h-[350px] border border-gray-100">
