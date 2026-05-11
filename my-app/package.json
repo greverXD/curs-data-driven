@@ -3,14 +3,19 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "concurrently \"vite\" \"npm run dev:server\"",
-    "dev:server": "tsx watch src/server/server.ts",
-    "build": "vite build && tsc",
-    "build:server": "tsc",
-    "start": "node dist/server/server.js",
-    "preview": "vite preview"
-  },
+"scripts": {
+  "dev": "concurrently \"vite\" \"npm run dev:server\"",
+
+  "dev:server": "tsx watch src/server/server.ts",
+
+  "build": "vite build",
+
+  "build:server": "tsc",
+
+  "start": "node dist/server/server.js",
+
+  "preview": "vite preview"
+},
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "@tailwindcss/vite": "^4.2.2",
