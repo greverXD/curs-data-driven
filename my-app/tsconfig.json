@@ -24,7 +24,8 @@
 
     "rootDir": "./src",
 
-    "outDir": "dist"
+    "outDir": "dist",
+    "ignoreDeprecations": "6.0"
   },
 
   "include": ["src"]
