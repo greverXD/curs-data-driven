@@ -25,7 +25,7 @@ const addToCart = () => {
 }
 onMounted(async () => {
   try {
-    const res = await fetch(import.meta.env.VITE_API_URL + `/products/${productId}`)
+    const res = await fetch(import.meta.env.VITE_API_URL + `/api/products/${productId}`)
     
     if (!res.ok) {
       throw new Error('Product not found')

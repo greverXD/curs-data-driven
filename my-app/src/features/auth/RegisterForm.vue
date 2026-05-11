@@ -115,7 +115,7 @@ const startTimer = () => {
       clearInterval(interval)
       canResend.value = true
     }
-  }, 1000)
+  }, 100)
 }
 
 
@@ -131,7 +131,7 @@ const handleResend = async () => {
 const emit = defineEmits(['switch'])
 
 const handleGoogleLogin = () => {
-  window.location.href = import.meta.env.VITE_API_URL + '/auth/google'
+  window.location.href = import.meta.env.VITE_API_URL + '/api/auth/google'
 }
 </script>
 
