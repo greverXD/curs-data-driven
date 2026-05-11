@@ -76,6 +76,37 @@ const addVariant = () => {
     image: ''
   })
 }
+
+const uploadImage = async (
+  e: Event,
+  index: number
+) => {
+  const target =
+    e.target as HTMLInputElement
+
+  if (!target.files?.[0]) return
+
+  const formData = new FormData()
+
+  formData.append(
+    'image',
+    target.files[0]
+  )
+
+  const res = await api.post(
+    '/upload',
+    formData,
+    {
+      headers: {
+        'Content-Type':
+          'multipart/form-data'
+      }
+    }
+  )
+
+  form.value.variants[index].image =
+    res.data.url
+}
 </script>
 
 <template>
@@ -165,11 +196,25 @@ const addVariant = () => {
               class="border p-3 rounded-xl"
             />
 
-            <input
-              v-model="variant.image"
-              placeholder="/uploads/image.jpg"
-              class="border p-3 rounded-xl col-span-2"
-            />
+           <div class="col-span-2">
+
+  <input
+    type="file"
+
+    @change="
+      uploadImage($event, index)
+    "
+  />
+
+  <img
+    v-if="variant.image"
+
+    :src="variant.image"
+
+    class="w-32 h-32 object-cover mt-4 rounded-xl"
+  />
+
+</div>
 
           </div>
 

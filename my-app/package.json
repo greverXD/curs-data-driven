@@ -3,23 +3,21 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-"scripts": {
-  "dev": "concurrently \"vite\" \"npm run dev:server\"",
-
-  "dev:server": "tsx watch src/server/server.ts",
-
-  "build": "vite build && tsc",
-
-  "start": "node dist/server/server.js",
-
-  "preview": "vite preview"
-},
+  "scripts": {
+    "dev": "concurrently \"vite\" \"npm run dev:server\"",
+    "dev:server": "tsx watch src/server/server.ts",
+    "build": "vite build && tsc",
+    "build:server": "tsc",
+    "start": "node dist/server/server.js",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "@tailwindcss/vite": "^4.2.2",
     "axios": "^1.13.6",
     "bcrypt": "^6.0.0",
     "chart.js": "^4.5.1",
+    "cloudinary": "^2.10.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
@@ -34,6 +32,7 @@
     "pg": "^8.20.0",
     "pinia": "^3.0.4",
     "prisma": "^5.22.0",
+    "streamifier": "^0.1.1",
     "validator": "^13.15.35",
     "vue": "^3.5.30",
     "vue-chartjs": "^5.3.3",
@@ -45,10 +44,12 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.1.0",
     "@types/node": "^25.6.0",
     "@types/nodemailer": "^8.0.0",
     "@types/passport": "^1.0.17",
     "@types/passport-google-oauth20": "^2.0.17",
+    "@types/streamifier": "^0.1.2",
     "@types/validator": "^13.15.10",
     "@vitejs/plugin-vue": "^6.0.5",
     "autoprefixer": "^10.4.27",

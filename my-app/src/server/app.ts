@@ -4,7 +4,7 @@ dotenv.config()
 import express from 'express'
 import cors from 'cors'
 import passport from 'passport'
-
+import uploadRoutes from './modules/upload/upload.routes'
 import '../server/modules/auth/google.stategy'
 import authRoutes from './modules/auth/auth.routes'
 import productRoutes from './modules/product/product.routes'
@@ -16,12 +16,15 @@ const app = express()
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: [
+  'http://localhost:5173',
+  'https://cursgolovan.netlify.app'
+],
     credentials: true
   })
 )
 app.use(express.json())
-
+app.use('/api/upload', uploadRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/orders', orderRoutes)

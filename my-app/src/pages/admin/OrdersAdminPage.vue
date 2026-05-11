@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import api from '../../api/axios'
+import api from "../../api/axios"
 
 const orders = ref<any[]>([])
 
