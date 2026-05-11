@@ -10,7 +10,7 @@ const products = ref<any[]>([])
 
 onMounted(async () => {
   const res = await fetch(
-    'http://localhost:3000/api/products/sale'
+    import.meta.env.VITE_API_URL + '/products/sale'
   )
 
   products.value = await res.json()
