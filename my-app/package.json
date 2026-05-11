@@ -2,20 +2,14 @@
   "name": "my-app",
   "private": true,
   "version": "0.0.0",
-  
-"scripts": {
-  "dev": "concurrently \"vite\" \"npm run dev:server\"",
-
-  "dev:server": "tsx watch src/server/server.ts",
-
-  "build": "vite build",
-
-  "build:server": "tsc",
-
-  "start": "node dist/server/server.js",
-
-  "preview": "vite preview"
-},
+  "scripts": {
+    "dev": "concurrently \"vite\" \"npm run dev:server\"",
+    "dev:server": "tsx watch src/server/server.ts",
+    "build": "vite build",
+    "build:server": "tsc",
+    "start": "tsx src/server/server.ts",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "@tailwindcss/vite": "^4.2.2",
@@ -65,7 +59,7 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.2",
+    "typescript": "^6.0.3",
     "vite": "^8.0.1"
   },
   "prisma": {
