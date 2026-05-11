@@ -1,8 +1,8 @@
 import prisma from '../../config/db'
 import { CreateOrderDto } from './order.types'
-
+import { Request, Response } from 'express'
 // 🛒 Создание заказа
-export const createOrder = async (userId: string, data: CreateOrderDto) => {
+export const createOrder = async (req: Request, res: Response,userId: string, data: CreateOrderDto) => {
   const {
   customerName,
   phone,
@@ -61,7 +61,14 @@ data: {
 await prisma.analyticsEvent.create({
   data: {
     type: 'ORDER_CREATED',
-    userId
+    userId,
+
+    ipAddress:
+      (req.headers['x-forwarded-for'] as string)?.split(',')[0] ||
+      req.socket.remoteAddress ||
+      null,
+
+    userAgent: req.headers['user-agent']
   }
 })
 return order
