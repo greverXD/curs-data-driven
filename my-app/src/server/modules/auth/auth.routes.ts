@@ -21,17 +21,19 @@ router.get(
   passport.authenticate('google', { session: false }),
   (req, res) => {
     if (!req.user) {
-      return res.redirect('http://localhost:5173/login?error=google_auth_failed')
+      return res.redirect(
+        `${process.env.CLIENT_URL}/login?error=google_auth_failed`
+      )
     }
 
-const data = req.user as any
+    const data = req.user as any
 
-const user = data.user
-const token = data.token
+    const user = data.user
+    const token = data.token
 
-res.redirect(
-  `http://localhost:5173/auth-success?token=${token}&role=${user.role}&email=${user.email}&id=${user.id}`
-)
+    res.redirect(
+      `${process.env.CLIENT_URL}/auth-success?token=${token}&role=${user.role}&email=${user.email}&id=${user.id}`
+    )
   }
 )
 
