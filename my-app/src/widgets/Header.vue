@@ -37,63 +37,75 @@ watch(isMenuOpen, (val) => {
 <template>
   <header class="sticky top-0 z-50 bg-white border-b">
 
-    <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="flex justify-between items-center px-4 md:px-8 h-[80px]">
 
-      <div class="h-[70px] flex items-center justify-between">
+      <!-- LEFT -->
+      <div class="flex items-center gap-6">
 
-        <!-- LOGO -->
-        <router-link
-          to="/"
-          class="font-bold text-2xl"
-        >
+        <h1 class="font-bold text-xl shrink-0">
           MyShop
-        </router-link>
+        </h1>
 
         <!-- DESKTOP NAV -->
-        <nav class="hidden md:flex items-center gap-6 text-gray-700">
+        <nav class="hidden md:flex gap-4 text-gray-600">
           <router-link to="/">Главная</router-link>
-          <router-link to="/catalog">Каталог</router-link>
-          <router-link to="/new">Новинки</router-link>
-          <router-link to="/sale">Распродажа</router-link>
+
+          <router-link to="/catalog">
+            Каталог
+          </router-link>
+
+          <router-link to="/new">
+            Новинки
+          </router-link>
+
+          <router-link to="/sale">
+            Распродажа
+          </router-link>
         </nav>
 
-        <!-- DESKTOP ACTIONS -->
-        <div class="hidden md:flex items-center gap-4">
+      </div>
 
-          <button class="text-xl hover:scale-110 transition">
-            🔍
-          </button>
+      <!-- RIGHT -->
+      <div class="hidden md:flex items-center gap-4 text-xl">
 
-          <template v-if="isAuth">
-            <router-link to="/account">
-              👤
-            </router-link>
-
-            <button @click="cart.openCart()">
-              🛒
-            </button>
-
-            <button @click="handleLogout">
-              Выйти
-            </button>
-          </template>
-
-          <template v-else>
-            <router-link to="/auth">
-              Войти
-            </router-link>
-          </template>
-        </div>
-
-        <!-- MOBILE BUTTON -->
-        <button
-          class="md:hidden text-3xl"
-          @click="isMenuOpen = true"
-        >
-          ☰
+        <button class="hover:scale-110 transition">
+          🔍
         </button>
 
+        <template v-if="isAuth">
+
+          <button @click="handleLogout">
+            Выйти
+          </button>
+
+          <router-link to="/account">
+            👤
+          </router-link>
+
+          <button @click="cart.openCart()">
+            🛒
+          </button>
+
+        </template>
+
+        <template v-else>
+
+          <router-link to="/auth">
+            Войти
+          </router-link>
+
+        </template>
+
       </div>
+
+      <!-- MOBILE BURGER -->
+      <button
+        class="md:hidden text-3xl"
+        @click="isMenuOpen = true"
+      >
+        ☰
+      </button>
+
     </div>
 
     <!-- OVERLAY -->
@@ -112,7 +124,6 @@ watch(isMenuOpen, (val) => {
         class="fixed top-0 right-0 h-full w-[280px] bg-white z-[100] shadow-2xl p-6 flex flex-col"
       >
 
-        <!-- TOP -->
         <div class="flex items-center justify-between mb-10">
 
           <h2 class="text-2xl font-bold">
@@ -125,9 +136,9 @@ watch(isMenuOpen, (val) => {
           >
             ✕
           </button>
+
         </div>
 
-        <!-- LINKS -->
         <nav class="flex flex-col gap-6 text-lg">
 
           <router-link to="/" @click="closeMenu">
