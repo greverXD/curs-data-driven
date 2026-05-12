@@ -15,13 +15,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="px-8 py-10">
+  <section class="px-4 md:px-8 py-10">
 
-    <h2 class="text-2xl mb-6">
+    <h2 class="text-2xl md:text-3xl font-bold mb-6">
       Популярные товары
     </h2>
 
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 
       <ProductCard
         v-for="product in products"
