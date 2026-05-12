@@ -57,7 +57,7 @@ const current = ref(props.images[0])
         :src="current"
         class="
           w-full
-          max-w-[500px]
+          max-w-full
           h-[400px]
           md:h-[600px]
           object-cover

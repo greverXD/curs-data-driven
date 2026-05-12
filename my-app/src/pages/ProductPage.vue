@@ -64,7 +64,7 @@ const selectedVariant = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col overflow-x-hidden">
 
     <Header />
 
@@ -72,7 +72,7 @@ const selectedVariant = computed(() => {
       v-if="product"
       class="
         flex-1
-        px-4 sm:px-6 md:px-10
+        max-w-full
         py-6 md:py-10
       "
     >
@@ -81,7 +81,7 @@ const selectedVariant = computed(() => {
   class="
     grid
     grid-cols-1
-    lg:grid-cols-2
+    xl:grid-cols-2
     gap-8 lg:gap-12
     items-start
     max-w-7xl
