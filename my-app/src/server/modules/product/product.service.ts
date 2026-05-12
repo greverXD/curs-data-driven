@@ -54,7 +54,7 @@ export const getNew = async () => {
       createdAt: 'desc'
     },
 
-    take: 8,
+    take: 4,
 
     include: {
       variants: true

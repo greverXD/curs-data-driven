@@ -10,11 +10,13 @@ const props = defineProps<{
 const products = ref<any[]>([])
 
 onMounted(async () => {
-  const res = await fetch(import.meta.env.VITE_API_URL + '/api/products')
+  const res = await fetch(
+    import.meta.env.VITE_API_URL + '/api/products'
+  )
+
   products.value = await res.json()
 })
 
-// 👇 ВСЯ логика в одном месте
 const finalProducts = computed(() => {
   let result = products.value.map(p => ({
     ...p,
@@ -22,12 +24,12 @@ const finalProducts = computed(() => {
     image: p.variants?.[0]?.image || ''
   }))
 
-  // фильтр
   if (props.category && props.category !== 'Все') {
-    result = result.filter(p => p.category === props.category)
+    result = result.filter(
+      p => p.category === props.category
+    )
   }
 
-  // сортировка
   if (props.sort === 'asc') {
     result.sort((a, b) => a.price - b.price)
   }
@@ -41,11 +43,21 @@ const finalProducts = computed(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div
+    class="
+      grid
+      grid-cols-2
+      md:grid-cols-2
+      xl:grid-cols-3
+      gap-4 md:gap-6
+    "
+  >
+
     <ProductCard
       v-for="product in finalProducts"
       :key="product.id"
       v-bind="product"
     />
+
   </div>
 </template>
