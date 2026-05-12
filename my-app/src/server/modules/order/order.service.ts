@@ -2,7 +2,7 @@ import prisma from '../../config/db'
 import { CreateOrderDto } from './order.types'
 import { Request, Response } from 'express'
 // 🛒 Создание заказа
-export const createOrder = async (req: Request, res: Response,userId: string, data: CreateOrderDto) => {
+export const createOrder = async ( req: Request,userId: string,data: CreateOrderDto) => {
   const {
   customerName,
   phone,

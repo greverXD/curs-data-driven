@@ -1,8 +1,13 @@
 import * as orderService from './order.service'
 import { Request,Response,NextFunction } from 'express'
-export const create = async (req:any, res:Response, next:NextFunction) => {
+export const create = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const order = await orderService.createOrder(
+      req,
       req.user.userId,
       req.body
     )
