@@ -7,6 +7,7 @@ type Order = {
   total: number
   createdAt: string
   items: any[]
+  status?: string
 }
 
 const orders = ref<Order[]>([])
@@ -25,34 +26,133 @@ onMounted(async () => {
 </script>
 
 <template>
+
   <div>
-    <h2 class="text-xl font-bold mb-4">Мои заказы</h2>
 
-    <!-- ⏳ loading -->
-    <div v-if="loading">Загрузка...</div>
+    <!-- HEADER -->
+    <div class="mb-6">
 
-    <!-- ❌ пусто -->
-    <div v-else-if="orders.length === 0" class="text-gray-400 text-center py-10">
-      Заказов нет
+      <h2 class="text-2xl font-bold">
+        Мои заказы
+      </h2>
+
+      <p class="text-gray-500 mt-1">
+        История ваших покупок
+      </p>
+
     </div>
 
-    <!-- ✅ данные -->
-    <div v-else>
+    <!-- LOADING -->
+    <div
+      v-if="loading"
+      class="text-gray-400"
+    >
+      Загрузка...
+    </div>
+
+    <!-- EMPTY -->
+    <div
+      v-else-if="orders.length === 0"
+      class="
+        border
+        rounded-2xl
+        p-10
+        text-center
+      "
+    >
+
+      <div class="text-5xl mb-4">
+        📦
+      </div>
+
+      <p class="text-gray-400">
+        Заказов пока нет
+      </p>
+
+    </div>
+
+    <!-- ORDERS -->
+    <div
+      v-else
+      class="space-y-4"
+    >
+
       <div
         v-for="order in orders"
         :key="order.id"
-        class="border p-4 rounded-xl mb-4"
+        class="
+          border
+          rounded-2xl
+          p-5
+          transition
+          hover:shadow-sm
+        "
       >
-        <p class="font-semibold">Заказ {{ order.id.slice(0, 6) }}</p>
 
-        <p class="text-gray-400 text-sm">
-          {{ new Date(order.createdAt).toLocaleDateString() }}
-        </p>
+        <!-- TOP -->
+        <div
+          class="
+            flex
+            flex-col
+            md:flex-row
+            md:items-center
+            md:justify-between
+            gap-3
+            mb-4
+          "
+        >
 
-        <p>Товаров: {{ order.items.length }}</p>
+          <div>
 
-        <p class="font-semibold">{{ order.total }} ₽</p>
+            <p class="font-semibold text-lg">
+              Заказ #{{ order.id.slice(0, 6) }}
+            </p>
+
+            <p class="text-gray-400 text-sm mt-1">
+              {{ new Date(order.createdAt).toLocaleDateString() }}
+            </p>
+
+          </div>
+
+          <div
+            class="
+              bg-green-100
+              text-green-700
+              text-sm
+              px-3 py-1
+              rounded-full
+              w-fit
+            "
+          >
+            {{ order.status || 'Оплачен' }}
+          </div>
+
+        </div>
+
+        <!-- INFO -->
+        <div
+          class="
+            flex
+            items-center
+            justify-between
+            text-sm md:text-base
+          "
+        >
+
+          <p class="text-gray-500">
+            Товаров: {{ order.items.length }}
+          </p>
+
+          <p class="font-bold text-lg">
+            {{ order.total }} ₽
+          </p>
+
+        </div>
+
       </div>
+
     </div>
+
   </div>
+
 </template>

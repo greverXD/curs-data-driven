@@ -18,35 +18,65 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Header />
 
-  <main class="px-10 py-10">
+  <div class="min-h-screen flex flex-col">
 
-    <h1 class="text-4xl font-bold mb-10">
-      Новинки
-    </h1>
+    <Header />
 
-    <div class="grid grid-cols-4 gap-6">
+    <main
+      class="
+        flex-1
+        px-4 md:px-8 lg:px-10
+        py-6 md:py-10
+      "
+    >
 
-      <ProductCard
-        v-for="product in products"
-        :key="product.id"
+      <!-- TITLE -->
+      <div class="mb-8 md:mb-10">
 
-        :id="product.id"
-        :title="product.title"
+        <h1 class="text-3xl md:text-5xl font-bold">
+          Новинки
+        </h1>
 
-        :price="
-          product.variants?.[0]?.price || 0
+        <p class="text-gray-500 mt-2">
+          Последние поступления сезона
+        </p>
+
+      </div>
+
+      <!-- PRODUCTS -->
+      <div
+        class="
+          grid
+          grid-cols-2
+          md:grid-cols-3
+          xl:grid-cols-4
+          gap-4 md:gap-6
         "
+      >
 
-        :image="
-          product.variants?.[0]?.image || ''
-        "
-      />
+        <ProductCard
+          v-for="product in products"
+          :key="product.id"
 
-    </div>
+          :id="product.id"
+          :title="product.title"
 
-  </main>
+          :price="
+            product.variants?.[0]?.price || 0
+          "
 
-  <Footer />
+          :image="
+            product.variants?.[0]?.image || ''
+          "
+        />
+
+      </div>
+
+    </main>
+
+    <Footer />
+
+  </div>
+
 </template>

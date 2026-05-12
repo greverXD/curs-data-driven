@@ -39,158 +39,106 @@ watch(isMenuOpen, (val) => {
 
     <div class="flex justify-between items-center px-4 md:px-8 h-[80px]">
 
-      <!-- LEFT -->
-      <div class="flex items-center gap-6">
+  <!-- LEFT -->
+  <div class="flex items-center gap-6">
 
-        <h1 class="font-bold text-xl shrink-0">
-          MyShop
-        </h1>
+    <!-- MOBILE BURGER -->
+    <button
+      class="md:hidden text-3xl"
+      @click="isMenuOpen = true"
+    >
+      ☰
+    </button>
 
-        <!-- DESKTOP NAV -->
-        <nav class="hidden md:flex gap-4 text-gray-600">
-          <router-link to="/">Главная</router-link>
+    <!-- LOGO -->
+    <h1 class="font-bold text-xl shrink-0">
+      MyShop
+    </h1>
 
-          <router-link to="/catalog">
-            Каталог
-          </router-link>
+    <!-- DESKTOP NAV -->
+    <nav class="hidden md:flex gap-4 text-gray-600">
 
-          <router-link to="/new">
-            Новинки
-          </router-link>
+      <router-link to="/">
+        Главная
+      </router-link>
 
-          <router-link to="/sale">
-            Распродажа
-          </router-link>
-        </nav>
+      <router-link to="/catalog">
+        Каталог
+      </router-link>
 
-      </div>
+      <router-link to="/new">
+        Новинки
+      </router-link>
 
-      <!-- RIGHT -->
-      <div class="hidden md:flex items-center gap-4 text-xl">
+      <router-link to="/sale">
+        Распродажа
+      </router-link>
 
-        <button class="hover:scale-110 transition">
-          🔍
+    </nav>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="flex items-center gap-4 text-xl">
+
+    <!-- DESKTOP -->
+    <div class="hidden md:flex items-center gap-4">
+
+      <button class="hover:scale-110 transition">
+        🔍
+      </button>
+
+      <template v-if="isAuth">
+
+        <button @click="handleLogout">
+          Выйти
         </button>
 
-        <template v-if="isAuth">
+        <router-link to="/account">
+          👤
+        </router-link>
 
-          <button @click="handleLogout">
-            Выйти
-          </button>
+      </template>
 
-          <router-link to="/account">
-            👤
-          </router-link>
+      <template v-else>
 
-          <button @click="cart.openCart()">
-            🛒
-          </button>
+        <router-link to="/auth">
+          Войти
+        </router-link>
 
-        </template>
-
-        <template v-else>
-
-          <router-link to="/auth">
-            Войти
-          </router-link>
-
-        </template>
-
-      </div>
-
-      <!-- MOBILE BURGER -->
-      <button
-        class="md:hidden text-3xl"
-        @click="isMenuOpen = true"
-      >
-        ☰
-      </button>
+      </template>
 
     </div>
 
-    <!-- OVERLAY -->
-    <transition name="fade">
-      <div
-        v-if="isMenuOpen"
-        class="fixed inset-0 bg-black/50 z-[90]"
-        @click="closeMenu"
-      />
-    </transition>
+    <!-- CART -->
+    <button
+      @click="cart.openCart()"
+      class="relative hover:scale-110 transition"
+    >
+      🛒
 
-    <!-- MOBILE MENU -->
-    <transition name="slide">
-      <div
-        v-if="isMenuOpen"
-        class="fixed top-0 right-0 h-full w-[280px] bg-white z-[100] shadow-2xl p-6 flex flex-col"
+      <span
+        v-if="cart.items.length"
+        class="
+          absolute
+          -top-2
+          -right-2
+          bg-red-500
+          text-white
+          text-xs
+          rounded-full
+          w-5 h-5
+          flex items-center justify-center
+        "
       >
+        {{ cart.items.length }}
+      </span>
 
-        <div class="flex items-center justify-between mb-10">
+    </button>
 
-          <h2 class="text-2xl font-bold">
-            Menu
-          </h2>
+  </div>
 
-          <button
-            class="text-3xl"
-            @click="closeMenu"
-          >
-            ✕
-          </button>
-
-        </div>
-
-        <nav class="flex flex-col gap-6 text-lg">
-
-          <router-link to="/" @click="closeMenu">
-            Главная
-          </router-link>
-
-          <router-link to="/catalog" @click="closeMenu">
-            Каталог
-          </router-link>
-
-          <router-link to="/new" @click="closeMenu">
-            Новинки
-          </router-link>
-
-          <router-link to="/sale" @click="closeMenu">
-            Распродажа
-          </router-link>
-
-          <template v-if="isAuth">
-
-            <router-link to="/account" @click="closeMenu">
-              Аккаунт
-            </router-link>
-
-            <button
-              class="text-left"
-              @click="cart.openCart(); closeMenu()"
-            >
-              Корзина
-            </button>
-
-            <button
-              class="text-left text-red-500"
-              @click="handleLogout"
-            >
-              Выйти
-            </button>
-
-          </template>
-
-          <template v-else>
-
-            <router-link to="/auth" @click="closeMenu">
-              Войти
-            </router-link>
-
-          </template>
-
-        </nav>
-
-      </div>
-    </transition>
+</div>
 
   </header>
 </template>

@@ -18,47 +18,81 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Header />
 
-  <main class="px-10 py-10">
+  <div class="min-h-screen flex flex-col">
 
-    <h1 class="text-4xl font-bold mb-10">
-      Распродажа
-    </h1>
+    <Header />
 
-    <div class="grid grid-cols-4 gap-6">
+    <main
+      class="
+        flex-1
+        px-4 md:px-8 lg:px-10
+        py-6 md:py-10
+      "
+    >
 
-      <div
-        v-for="product in products"
-        :key="product.id"
-        class="relative"
-      >
+      <!-- TITLE -->
+      <div class="mb-8 md:mb-10">
 
-        <!-- Badge -->
-        <div
-          class="absolute top-2 left-2 bg-red-500 text-white px-3 py-1 rounded-full z-10"
-        >
-          -{{ product.discountPercent }}%
-        </div>
+        <h1 class="text-3xl md:text-5xl font-bold">
+          Распродажа
+        </h1>
 
-        <ProductCard
-          :id="product.id"
-          :title="product.title"
-
-          :price="
-            product.variants?.[0]?.price || 0
-          "
-
-          :image="
-            product.variants?.[0]?.image || ''
-          "
-        />
+        <p class="text-gray-500 mt-2">
+          Лучшие предложения со скидками
+        </p>
 
       </div>
 
-    </div>
+      <!-- PRODUCTS -->
+      <div
+        class="
+          grid
+          grid-cols-2
+          md:grid-cols-3
+          xl:grid-cols-4
+          gap-4 md:gap-6
+        "
+      >
 
-  </main>
+        <div
+          v-for="product in products"
+          :key="product.id"
+          class="relative"
+        >
 
-  <Footer />
+          <!-- DISCOUNT -->
+          <div
+            class="
+              absolute
+              top-2 left-2
+              bg-red-500
+              text-white
+              text-xs md:text-sm
+              px-3 py-1
+              rounded-full
+              z-10
+              shadow
+            "
+          >
+            -{{ product.discountPercent }}%
+          </div>
+
+          <ProductCard
+            :id="product.id"
+            :title="product.title"
+            :price="product.variants?.[0]?.price || 0"
+            :image="product.variants?.[0]?.image || ''"
+          />
+
+        </div>
+
+      </div>
+
+    </main>
+
+    <Footer />
+
+  </div>
+
 </template>
