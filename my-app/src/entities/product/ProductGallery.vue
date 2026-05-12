@@ -28,7 +28,7 @@ const current = ref(props.images[0])
         flex
         md:flex-col
         gap-2
-        overflow-x-auto
+        overflow-x-auto max-w-full
       "
     >
 

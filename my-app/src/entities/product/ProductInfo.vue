@@ -10,7 +10,7 @@ defineEmits(['selectSize'])
 
 <template>
 
-  <div class="max-w-[500px]">
+  <div class="w-full min-w-0 max-w-[500px]">
 
     <!-- TITLE -->
     <h1 class="text-3xl md:text-4xl font-bold">

@@ -72,7 +72,7 @@ const selectedVariant = computed(() => {
       v-if="product"
       class="
         flex-1
-        px-4 md:px-10
+        px-4 sm:px-6 md:px-10
         py-6 md:py-10
       "
     >
