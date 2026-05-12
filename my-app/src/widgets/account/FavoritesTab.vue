@@ -1,29 +1,51 @@
+<script setup lang="ts">
+import { useFavoritesStore }
+from '../../store/favorites'
+
+import ProductCard
+from '../../entities/product/ProductCard.vue'
+
+const favoritesStore =
+  useFavoritesStore()
+</script>
+
 <template>
 
-  <div
-    class="
-      min-h-[300px]
-      flex
-      flex-col
-      items-center
-      justify-center
-      text-center
-      px-4
-    "
-  >
+  <div>
 
-    <div class="text-6xl mb-5">
-      ♥
+    <div
+      v-if="
+        !favoritesStore.favorites.length
+      "
+      class="
+        text-gray-500
+        text-center
+        py-10
+      "
+    >
+      Нет избранных товаров
     </div>
 
-    <h2 class="text-2xl font-bold mb-3">
-      Избранное пусто
-    </h2>
+    <div
+      v-else
+      class="
+        grid
+        grid-cols-2
+        md:grid-cols-3
+        gap-4
+      "
+    >
 
-    <p class="text-gray-400 max-w-md leading-7">
-      Сохраняйте понравившиеся товары,
-      чтобы быстро найти их позже
-    </p>
+      <ProductCard
+        v-for="
+          product
+          in favoritesStore.favorites
+        "
+        :key="product.id"
+        v-bind="product"
+      />
+
+    </div>
 
   </div>
 

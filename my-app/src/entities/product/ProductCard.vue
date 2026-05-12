@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { useLike } from '../../features/like-product/like'
-
-const { liked, toggle } = useLike()
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { useFavoritesStore }
+from '../../store/favorites'
+
 const router = useRouter()
+
+const favoritesStore =
+  useFavoritesStore()
+
 const props = defineProps<{
   id: string
   title: string
@@ -12,68 +17,151 @@ const props = defineProps<{
   image: string
   discountPercent?: number
 }>()
+
 const goToProduct = () => {
   router.push(`/product/${props.id}`)
 }
+
+const liked = computed(() =>
+  favoritesStore.isLiked(props.id)
+)
+
+const toggleLike = () => {
+  favoritesStore.toggleFavorite({
+    id: props.id,
+    title: props.title,
+    price: props.price,
+    image: props.image,
+    discountPercent:
+      props.discountPercent
+  })
+}
+
 const discountedPrice =
-  props.discountPercent
+  (props.discountPercent || 0) > 0
     ? Math.round(
         props.price *
-          (1 -
-            props.discountPercent /
-              100)
+          (
+            1 -
+            (props.discountPercent || 0) /
+              100
+          )
       )
     : props.price
 </script>
 
 <template>
-  <div @click="goToProduct" class="cursor-pointer">
-  <div class="border p-3 rounded hover:shadow transition">
-    <div class="relative">
-      <img
-        :src="props.image"
-        class="h-48 w-full object-cover rounded"
-      />
 
-      <button
-        @click="toggle"
-        class="absolute top-2 right-2 text-xl transition transform"
-        :class="liked ? 'text-red-500 scale-125' : 'text-white'"
+  <div class="cursor-pointer">
+
+    <div
+      @click="goToProduct"
+      class="
+        border
+        p-3
+        rounded
+        hover:shadow
+        transition
+      "
+    >
+
+      <!-- IMAGE -->
+      <div class="relative">
+
+        <!-- DISCOUNT -->
+        <div
+          v-if="
+            (props.discountPercent || 0) > 0
+          "
+          class="
+            absolute
+            top-2
+            left-2
+            bg-red-500
+            text-white
+            text-sm
+            px-3 py-1
+            rounded-full
+            font-semibold
+            z-20
+          "
+        >
+          -{{ props.discountPercent }}%
+        </div>
+
+        <!-- IMAGE -->
+        <img
+          :src="props.image"
+          class="
+            h-48
+            w-full
+            object-cover
+            rounded
+          "
+        />
+
+        <!-- LIKE -->
+        <button
+          @click.stop="toggleLike"
+          class="
+            absolute
+            top-2
+            right-2
+            text-xl
+            transition
+            transform
+            z-20
+          "
+          :class="
+            liked
+              ? 'text-red-500 scale-125'
+              : 'text-white'
+          "
+        >
+          ♥
+        </button>
+
+      </div>
+
+      <!-- TITLE -->
+      <h3 class="mt-3 font-medium">
+        {{ props.title }}
+      </h3>
+
+      <!-- PRICE -->
+      <div
+        class="
+          flex
+          items-center
+          gap-2
+          mt-2
+          flex-wrap
+        "
       >
-        ♥
-      </button>
+
+        <!-- NEW PRICE -->
+        <p class="font-semibold text-lg">
+          ${{ discountedPrice }}
+        </p>
+
+        <!-- OLD PRICE -->
+        <p
+          v-if="
+            (props.discountPercent || 0) > 0
+          "
+          class="
+            text-gray-400
+            line-through
+            text-sm
+          "
+        >
+          ${{ props.price }}
+        </p>
+
+      </div>
+
     </div>
-     <div
-  v-if="(props.discountPercent || 0) > 0"
-  class="
-    absolute
-    top-2
-    left-2
-    bg-red-500
-    text-white
-    text-sm
-    px-3 py-1
-    rounded-full
-    font-semibold
-  "
->
-  -{{ props.discountPercent }}%
-</div>
-    <h3 class="mt-2">{{props.title}}</h3>
-    <div class="flex items-center gap-2 mt-1">
 
-  <p class="font-semibold">
-    ${{ discountedPrice }}
-  </p>
-
-  <p
-    v-if="(props.discountPercent || 0) > 0"
-    class="text-gray-400 line-through text-sm"
-  >
-    ${{ props.price }}
-  </p>
-
-</div>
   </div>
-  </div>
+
 </template>
