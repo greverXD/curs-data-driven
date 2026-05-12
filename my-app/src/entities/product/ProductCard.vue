@@ -59,14 +59,16 @@ const discountedPrice =
       class="
         border
         p-3
-        rounded
-        hover:shadow
-        transition
+        rounded-2xl
+        hover:shadow-xl
+        transition-all
+        duration-300
+        bg-white
       "
     >
 
       <!-- IMAGE -->
-      <div class="relative">
+      <div class="relative overflow-hidden rounded-xl">
 
         <!-- DISCOUNT -->
         <div
@@ -80,10 +82,12 @@ const discountedPrice =
             bg-red-500
             text-white
             text-sm
-            px-3 py-1
+            px-3
+            py-1
             rounded-full
             font-semibold
             z-20
+            shadow-lg
           "
         >
           -{{ props.discountPercent }}%
@@ -96,7 +100,10 @@ const discountedPrice =
             h-48
             w-full
             object-cover
-            rounded
+            rounded-xl
+            transition-transform
+            duration-500
+            hover:scale-105
           "
         />
 
@@ -107,15 +114,24 @@ const discountedPrice =
             absolute
             top-2
             right-2
+            w-10
+            h-10
+            rounded-full
+            backdrop-blur-md
+            bg-black/30
+            flex
+            items-center
+            justify-center
             text-xl
-            transition
+            transition-all
+            duration-300
             transform
             z-20
           "
           :class="
             liked
-              ? 'text-red-500 scale-125'
-              : 'text-white'
+              ? 'text-red-500 scale-110'
+              : 'text-white hover:text-red-300'
           "
         >
           ♥
@@ -124,7 +140,14 @@ const discountedPrice =
       </div>
 
       <!-- TITLE -->
-      <h3 class="mt-3 font-medium">
+      <h3
+        class="
+          mt-4
+          font-semibold
+          text-lg
+          line-clamp-1
+        "
+      >
         {{ props.title }}
       </h3>
 
@@ -140,7 +163,12 @@ const discountedPrice =
       >
 
         <!-- NEW PRICE -->
-        <p class="font-semibold text-lg">
+        <p
+          class="
+            font-bold
+            text-xl
+          "
+        >
           ${{ discountedPrice }}
         </p>
 
