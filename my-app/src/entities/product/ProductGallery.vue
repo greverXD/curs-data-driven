@@ -51,7 +51,7 @@ const current = ref(props.images[0])
     </div>
 
     <!-- MAIN IMAGE -->
-    <div class="relative flex-1">
+    <div class="relative w-full min-w-0">
 
       <img
         :src="current"

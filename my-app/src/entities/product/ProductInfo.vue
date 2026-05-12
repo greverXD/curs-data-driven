@@ -60,18 +60,7 @@ defineEmits(['selectSize'])
 
     </div>
 
-    <!-- STOCK -->
-    <div class="mt-6 text-sm text-gray-500">
 
-      <span v-if="selectedVariant?.stock > 0">
-        В наличии: {{ selectedVariant.stock }}
-      </span>
-
-      <span v-else class="text-red-500">
-        Нет в наличии
-      </span>
-
-    </div>
 
   </div>
 

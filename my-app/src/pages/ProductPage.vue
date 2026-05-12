@@ -77,17 +77,18 @@ const selectedVariant = computed(() => {
       "
     >
 
-      <div
-        class="
-          grid
-          grid-cols-1
-          lg:grid-cols-2
-          gap-8 lg:gap-16
-          items-start
-          max-w-7xl
-          mx-auto
-        "
-      >
+<div
+  class="
+    grid
+    grid-cols-1
+    lg:grid-cols-2
+    gap-8 lg:gap-12
+    items-start
+    max-w-7xl
+    mx-auto
+    overflow-hidden
+  "
+>
 
         <ProductGallery
           v-if="selectedVariant"
