@@ -61,22 +61,7 @@ onMounted(async () => {
           class="relative"
         >
 
-          <!-- DISCOUNT -->
-          <div
-            class="
-              absolute
-              top-2 left-2
-              bg-red-500
-              text-white
-              text-xs md:text-sm
-              px-3 py-1
-              rounded-full
-              z-10
-              shadow
-            "
-          >
-            -{{ product.discountPercent }}%
-          </div>
+
 
           <ProductCard
   :id="product.id"
