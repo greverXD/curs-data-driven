@@ -57,6 +57,7 @@ const finalProducts = computed(() => {
       v-for="product in finalProducts"
       :key="product.id"
       v-bind="product"
+      :discountPercent="product.discountPercent"
     />
 
   </div>

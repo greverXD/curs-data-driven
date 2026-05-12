@@ -2,13 +2,22 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-
+import { getDiscountPrice } from '../../lib/pricing'
 import api from '../../api/axios'
 
 const products = ref<any[]>([])
 
 const loading = ref(true)
-
+const categories = [
+  'Sneakers',
+  'Hoodies',
+  'T-Shirts',
+  'Jeans',
+  'Jackets',
+  'Accessories',
+  'Bags',
+  'Sportswear'
+]
 const form = ref({
   title: '',
   description: '',
@@ -40,6 +49,14 @@ onMounted(async () => {
 })
 
 const createProduct = async () => {
+  if (form.value.discountPercent > 100) {
+    form.value.discountPercent = 100
+  }
+
+  if (form.value.discountPercent < 0) {
+    form.value.discountPercent = 0
+  }
+
   await api.post('/products', form.value)
 
   await loadProducts()
@@ -151,11 +168,22 @@ const uploadImage = async (
           class="border p-3 rounded-xl"
         />
 
-        <input
-          v-model="form.category"
-          placeholder="Категория"
-          class="border p-3 rounded-xl"
-        />
+        <select
+  v-model="form.category"
+  class="border p-3 rounded-xl"
+>
+  <option disabled value="">
+    Select category
+  </option>
+
+  <option
+    v-for="category in categories"
+    :key="category"
+    :value="category"
+  >
+    {{ category }}
+  </option>
+</select>
 
         <textarea
           v-model="form.description"
@@ -168,12 +196,14 @@ const uploadImage = async (
           "
         />
 
-        <input
-          v-model="form.discountPercent"
-          type="number"
-          placeholder="Скидка %"
-          class="border p-3 rounded-xl"
-        />
+<input
+  v-model="form.discountPercent"
+  type="number"
+  min="0"
+  max="100"
+  placeholder="Скидка %"
+  class="border p-3 rounded-xl"
+/>
 
       </div>
 
@@ -370,7 +400,12 @@ const uploadImage = async (
             </div>
 
             <div>
-              ₽ {{ variant.price }}
+              ₽ {{
+  getDiscountPrice(
+    variant.price,
+    product.discountPercent
+  )
+}}
             </div>
 
             <div>

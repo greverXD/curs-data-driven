@@ -69,6 +69,7 @@ onMounted(async () => {
           :image="
             product.variants?.[0]?.image || ''
           "
+          :discountPercent="product.discountPercent"
         />
 
       </div>

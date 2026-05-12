@@ -27,6 +27,7 @@ onMounted(async () => {
         v-for="product in products"
         :key="product.id"
         v-bind="product"
+        :discountPercent="product.discountPercent"
       />
 
     </div>

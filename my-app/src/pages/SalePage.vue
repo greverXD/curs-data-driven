@@ -79,11 +79,12 @@ onMounted(async () => {
           </div>
 
           <ProductCard
-            :id="product.id"
-            :title="product.title"
-            :price="product.variants?.[0]?.price || 0"
-            :image="product.variants?.[0]?.image || ''"
-          />
+  :id="product.id"
+  :title="product.title"
+  :price="product.variants[0].price"
+  :image="product.variants[0].image"
+  :discountPercent="product.discountPercent"
+/>
 
         </div>
 
