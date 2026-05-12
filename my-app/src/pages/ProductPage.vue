@@ -64,30 +64,73 @@ const selectedVariant = computed(() => {
 </script>
 
 <template>
-  <Header />
+  <div class="min-h-screen flex flex-col">
 
-  <main v-if="product" class="grid grid-cols-2 gap-10 px-10 py-10">
-    
-<ProductGallery 
-  v-if="selectedVariant"
-  :images="[selectedVariant.image]" 
-/>
+    <Header />
 
-        <ProductInfo
-  v-if="product && selectedVariant"
-  :product="product"
-  :selectedVariant="selectedVariant"
-  :selectedSize="selectedSize"
-  @selectSize="selectedSize = $event"
-/>
+    <main
+      v-if="product"
+      class="
+        flex-1
+        px-4 md:px-10
+        py-6 md:py-10
+      "
+    >
 
-<button @click="addToCart">Добавить в корзину</button>
+      <div
+        class="
+          grid
+          grid-cols-1
+          lg:grid-cols-2
+          gap-8 lg:gap-16
+          items-start
+          max-w-7xl
+          mx-auto
+        "
+      >
 
-  </main>
+        <ProductGallery
+          v-if="selectedVariant"
+          :images="[selectedVariant.image]"
+        />
 
-  <div v-else class="text-center py-20">
-    Загрузка...
+        <div>
+
+          <ProductInfo
+            v-if="product && selectedVariant"
+            :product="product"
+            :selectedVariant="selectedVariant"
+            :selectedSize="selectedSize"
+            @selectSize="selectedSize = $event"
+          />
+
+          <!-- BUTTON -->
+          <button
+            @click="addToCart"
+            class="
+              mt-8
+              w-full md:w-auto
+              px-8 py-4
+              bg-black
+              text-white
+              rounded
+              transition-all
+              duration-300
+              hover:scale-105
+              hover:bg-gray-800
+              active:scale-95
+            "
+          >
+            Добавить в корзину
+          </button>
+
+        </div>
+
+      </div>
+
+    </main>
+
+    <Footer />
+
   </div>
-
-  <Footer />
 </template>

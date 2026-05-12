@@ -12,32 +12,79 @@ const current = ref(props.images[0])
 </script>
 
 <template>
-  <div class="flex gap-4">
 
-    <div class="flex flex-col gap-2">
+  <div
+    class="
+      flex
+      flex-col-reverse
+      md:flex-row
+      gap-4
+    "
+  >
+
+    <!-- THUMBNAILS -->
+    <div
+      class="
+        flex
+        md:flex-col
+        gap-2
+        overflow-x-auto
+      "
+    >
+
       <img
         v-for="img in props.images"
         :key="img"
         :src="img"
-        class="w-16 h-16 object-cover cursor-pointer border"
+        class="
+          w-16 h-16
+          md:w-20 md:h-20
+          object-cover
+          cursor-pointer
+          border
+          rounded
+          flex-shrink-0
+        "
         @click="current = img"
       />
+
     </div>
 
-    <div class="relative">
+    <!-- MAIN IMAGE -->
+    <div class="relative flex-1">
+
       <img
         :src="current"
-        class="w-[400px] h-[500px] object-cover"
+        class="
+          w-full
+          max-w-[500px]
+          h-[400px]
+          md:h-[600px]
+          object-cover
+          rounded
+        "
       />
 
       <button
         @click="toggle"
-        class="absolute top-2 right-2 text-xl"
-        :class="liked ? 'text-red-500' : 'text-white'"
+        class="
+          absolute
+          top-3
+          right-3
+          text-2xl
+          transition
+        "
+        :class="
+          liked
+            ? 'text-red-500 scale-110'
+            : 'text-white'
+        "
       >
         ♥
       </button>
+
     </div>
 
   </div>
+
 </template>

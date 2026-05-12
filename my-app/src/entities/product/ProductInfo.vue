@@ -1,47 +1,78 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 const props = defineProps<{
   product: any
   selectedVariant: any
   selectedSize: string | null
 }>()
 
-
-const selectedSize = ref<number | null>(null)
-
-const sizes = computed(() =>
-  props.product.variants.map((v: any) => v.size)
-)
+defineEmits(['selectSize'])
 </script>
 
 <template>
-  <div>
-  <h1 class="text-2xl font-bold">
-    {{ product.title }}
-  </h1>
 
-  <p class="text-xl mt-2">
-    {{ selectedVariant?.price }} $
-  </p>
+  <div class="max-w-[500px]">
 
-  <p class="mt-4 text-gray-600">
-    {{ product.description }}
-  </p>
+    <!-- TITLE -->
+    <h1 class="text-3xl md:text-4xl font-bold">
+      {{ product.title }}
+    </h1>
 
-  <div class="mt-4">
-    <p class="mb-2">Размер</p>
+    <!-- PRICE -->
+    <p class="text-2xl font-medium mt-3">
+      {{ selectedVariant?.price }} $
+    </p>
 
-    <div class="flex gap-2">
-      <button
-        v-for="v in product.variants"
-        :key="v.id"
-        @click="$emit('selectSize', v.size)"
-        class="border px-3 py-1"
-         :class="v.size === 'S' ? 'bg-black text-white' : ''"
-      >
-        {{ v.size }}
-      </button>
+    <!-- DESCRIPTION -->
+    <p class="mt-6 text-gray-600 leading-7">
+      {{ product.description }}
+    </p>
+
+    <!-- SIZES -->
+    <div class="mt-8">
+
+      <p class="mb-3 font-medium">
+        Размер
+      </p>
+
+      <div class="flex gap-3 flex-wrap">
+
+        <button
+          v-for="v in product.variants"
+          :key="v.id"
+          @click="$emit('selectSize', v.size)"
+          class="
+            border
+            px-4 py-2
+            rounded
+            transition-all
+            duration-200
+          "
+          :class="
+            selectedSize === v.size
+              ? 'bg-black text-white border-black'
+              : 'bg-white text-black border-gray-300 hover:border-black'
+          "
+        >
+          {{ v.size }}
+        </button>
+
+      </div>
+
     </div>
+
+    <!-- STOCK -->
+    <div class="mt-6 text-sm text-gray-500">
+
+      <span v-if="selectedVariant?.stock > 0">
+        В наличии: {{ selectedVariant.stock }}
+      </span>
+
+      <span v-else class="text-red-500">
+        Нет в наличии
+      </span>
+
+    </div>
+
   </div>
-</div>
+
 </template>
