@@ -65,23 +65,7 @@ const current = ref(props.images[0])
         "
       />
 
-      <button
-        @click="toggle"
-        class="
-          absolute
-          top-3
-          right-3
-          text-2xl
-          transition
-        "
-        :class="
-          liked
-            ? 'text-red-500 scale-110'
-            : 'text-white'
-        "
-      >
-        ♥
-      </button>
+      
 
     </div>
 

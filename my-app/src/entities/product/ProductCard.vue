@@ -107,7 +107,35 @@ const discountedPrice =
           "
         />
 
-
+        <!-- LIKE -->
+        <button
+          @click.stop="toggleLike"
+          class="
+            absolute
+            top-2
+            right-2
+            w-10
+            h-10
+            rounded-full
+            backdrop-blur-md
+            bg-black/30
+            flex
+            items-center
+            justify-center
+            text-xl
+            transition-all
+            duration-300
+            transform
+            z-20
+          "
+          :class="
+            liked
+              ? 'text-red-500 scale-110'
+              : 'text-white hover:text-red-300'
+          "
+        >
+          ♥
+        </button>
 
       </div>
 
