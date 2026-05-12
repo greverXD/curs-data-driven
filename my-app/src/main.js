@@ -8,7 +8,7 @@ import { router } from './router/router'
 import { createPinia } from 'pinia'
 import { useAuthStore } from './store/auth'
 
-import { detectLocale } from './shared/services/locale'
+// import { detectLocale } from './shared/services/locale'
 
 const app = createApp(App)
 
@@ -23,6 +23,6 @@ app.use(i18n)
 
 app.use(router)
 
-await detectLocale()
+// await detectLocale()
 
 app.mount('#app')
