@@ -1,3 +1,5 @@
+<!-- GeographyPage.vue -->
+
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import api from '../../api/axios'
@@ -14,12 +16,29 @@ onMounted(async () => {
 </script>
 
 <template>
+
   <div v-if="data">
 
-    <div class="grid grid-cols-3 gap-6">
+    <div
+      class="
+        grid
+        grid-cols-1
+        md:grid-cols-2
+        xl:grid-cols-3
+        gap-6
+      "
+    >
 
-      <!-- Browsers -->
-      <div class="bg-white p-6 rounded-2xl border">
+      <!-- BROWSERS -->
+      <div
+        class="
+          bg-white
+          p-4 md:p-6
+          rounded-2xl
+          border
+          overflow-hidden
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-4">
           Browsers
@@ -28,16 +47,35 @@ onMounted(async () => {
         <div
           v-for="(value, key) in data.geography.browsers"
           :key="key"
-          class="flex justify-between mb-2"
+          class="
+            flex
+            justify-between
+            gap-4
+            mb-3
+            break-all
+          "
         >
+
           <span>{{ key }}</span>
-          <span>{{ value }}</span>
+
+          <span class="font-semibold">
+            {{ value }}
+          </span>
+
         </div>
 
       </div>
 
-      <!-- Devices -->
-      <div class="bg-white p-6 rounded-2xl border">
+      <!-- DEVICES -->
+      <div
+        class="
+          bg-white
+          p-4 md:p-6
+          rounded-2xl
+          border
+          overflow-hidden
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-4">
           Devices
@@ -46,16 +84,34 @@ onMounted(async () => {
         <div
           v-for="(value, key) in data.geography.devices"
           :key="key"
-          class="flex justify-between mb-2"
+          class="
+            flex
+            justify-between
+            gap-4
+            mb-3
+          "
         >
+
           <span>{{ key }}</span>
-          <span>{{ value }}</span>
+
+          <span class="font-semibold">
+            {{ value }}
+          </span>
+
         </div>
 
       </div>
 
       <!-- OS -->
-      <div class="bg-white p-6 rounded-2xl border">
+      <div
+        class="
+          bg-white
+          p-4 md:p-6
+          rounded-2xl
+          border
+          overflow-hidden
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-4">
           Operating Systems
@@ -64,10 +120,21 @@ onMounted(async () => {
         <div
           v-for="(value, key) in data.geography.os"
           :key="key"
-          class="flex justify-between mb-2"
+          class="
+            flex
+            justify-between
+            gap-4
+            mb-3
+            break-all
+          "
         >
+
           <span>{{ key }}</span>
-          <span>{{ value }}</span>
+
+          <span class="font-semibold">
+            {{ value }}
+          </span>
+
         </div>
 
       </div>
@@ -75,4 +142,5 @@ onMounted(async () => {
     </div>
 
   </div>
+
 </template>

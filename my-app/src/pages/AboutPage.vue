@@ -1,132 +1,206 @@
+<!-- AboutPage.vue / FAQ -->
+
 <script setup lang="ts">
-import { ref } from 'vue'
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+
 import Header from '../widgets/Header.vue'
 import Footer from '../widgets/Footer.vue'
+
 const phone = '+375291234567'
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+
+const isMobile =
+  /Android|iPhone|iPad|iPod/i.test(
+    navigator.userAgent
+  )
 
 const link = computed(() => {
   if (isMobile) {
     return `tel:${phone}`
   }
+
   return `viber://chat?number=${phone.replace('+', '')}`
 })
+
 const activeIndex = ref<number | null>(null)
 
 const toggle = (index: number) => {
-  activeIndex.value = activeIndex.value === index ? null : index
+  activeIndex.value =
+    activeIndex.value === index
+      ? null
+      : index
 }
 
 const faqs = [
   {
     q: 'Как оформить заказ?',
-    a: 'Выберите товар, добавьте его в корзину и перейдите к оформлению. Заполните данные доставки и подтвердите заказ.'
+    a: 'Выберите товар, добавьте его в корзину и перейдите к оформлению.'
   },
   {
     q: 'Какие способы оплаты доступны?',
-    a: 'Мы принимаем банковские карты, Apple Pay, Google Pay и оплату при получении.'
+    a: 'Мы принимаем банковские карты, Apple Pay и Google Pay.'
   },
   {
     q: 'Сколько стоит доставка?',
-    a: 'Стоимость доставки рассчитывается автоматически при оформлении заказа и зависит от региона.'
-  },
-  {
-    q: 'Как долго идет доставка?',
-    a: 'В среднем доставка занимает от 2 до 7 рабочих дней в зависимости от города.'
-  },
-  {
-    q: 'Могу ли я вернуть товар?',
-    a: 'Да, вы можете вернуть товар в течение 30 дней при сохранении товарного вида.'
-  },
-  {
-    q: 'Как узнать свой размер?',
-    a: 'На странице товара есть таблица размеров. Также вы можете обратиться в поддержку.'
-  },
-  {
-    q: 'Есть ли примерка при доставке?',
-    a: 'В некоторых регионах доступна примерка перед покупкой — уточняйте при оформлении.'
-  },
-  {
-    q: 'Как отследить заказ?',
-    a: 'После отправки заказа вы получите трек-номер на email или в личном кабинете.'
-  },
-  {
-    q: 'Можно ли обменять товар?',
-    a: 'Да, обмен возможен в течение 30 дней при наличии товара на складе.'
-  },
-  {
-    q: 'Какая гарантия на товары?',
-    a: 'Мы предоставляем гарантию качества на все товары сроком до 6 месяцев.'
-  },
-  {
-    q: 'Как связаться со службой поддержки?',
-    a: 'Вы можете написать нам в чат на сайте или отправить письмо на support@shop.com.'
-  },
-  {
-    q: 'Есть ли программа лояльности?',
-    a: 'Да, мы начисляем бонусы за покупки, которые можно использовать для скидок.'
+    a: 'Стоимость зависит от региона.'
   }
 ]
 </script>
 
 <template>
-  <Header />
 
-  <main class="px-10 py-10 max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">Часто задаваемые вопросы</h1>
+  <div class="min-h-screen flex flex-col">
 
-    <div class="space-y-3">
-      <div
-        v-for="(item, index) in faqs"
-        :key="index"
-        class="border rounded p-4 cursor-pointer transition hover:shadow"
-        @click="toggle(index)"
+    <Header />
+
+    <main
+      class="
+        flex-1
+        px-4
+        sm:px-6
+        md:px-10
+        py-8 md:py-10
+        max-w-4xl
+        mx-auto
+        w-full
+      "
+    >
+
+      <h1
+        class="
+          text-3xl
+          md:text-4xl
+          font-bold
+          mb-8
+        "
       >
-        <div class="flex justify-between items-center">
-          <p class="font-medium">{{ item.q }}</p>
-          <span>{{ activeIndex === index ? '−' : '+' }}</span>
+        Часто задаваемые вопросы
+      </h1>
+
+      <div class="space-y-4">
+
+        <div
+          v-for="(item, index) in faqs"
+          :key="index"
+          class="
+            border
+            rounded-2xl
+            p-4 md:p-5
+            cursor-pointer
+            transition
+            hover:shadow-lg
+            bg-white
+          "
+          @click="toggle(index)"
+        >
+
+          <div
+            class="
+              flex
+              justify-between
+              items-center
+              gap-4
+            "
+          >
+
+            <p
+              class="
+                font-medium
+                text-sm
+                md:text-base
+              "
+            >
+              {{ item.q }}
+            </p>
+
+            <span class="text-2xl shrink-0">
+              {{ activeIndex === index ? '−' : '+' }}
+            </span>
+
+          </div>
+
+          <transition name="fade">
+
+            <p
+              v-if="activeIndex === index"
+              class="
+                mt-4
+                text-gray-600
+                leading-7
+              "
+            >
+              {{ item.a }}
+            </p>
+
+          </transition>
+
         </div>
 
-        <transition name="fade">
-          <p
-            v-if="activeIndex === index"
-            class="mt-3 text-gray-600"
-          >
-            {{ item.a }}
-          </p>
-        </transition>
       </div>
-    </div>
-    <div class="bg-black text-white rounded-2xl p-8 mt-10 flex flex-col md:flex-row items-center justify-between">
-    
-    <div>
-      <h2 class="text-2xl font-bold mb-2">
-        Не нашли ответ на вопрос?
-      </h2>
-      <p class="text-gray-400">
-        Позвоните нам — поможем за пару минут
-      </p>
-    </div>
 
-    <a
-      :href="link"
-      class="mt-4 md:mt-0 bg-white text-black px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition"
-    >
-      {{ phone }}
-    </a>
+      <!-- CONTACT BLOCK -->
+      <div
+        class="
+          bg-black
+          text-white
+          rounded-2xl
+          p-6 md:p-8
+          mt-10
+          flex
+          flex-col
+          md:flex-row
+          items-start
+          md:items-center
+          justify-between
+          gap-6
+        "
+      >
+
+        <div>
+
+          <h2 class="text-2xl font-bold mb-2">
+            Не нашли ответ?
+          </h2>
+
+          <p class="text-gray-400">
+            Свяжитесь с нами
+          </p>
+
+        </div>
+
+        <a
+          :href="link"
+          class="
+            bg-white
+            text-black
+            px-6 py-3
+            rounded-xl
+            font-semibold
+            hover:opacity-90
+            transition
+            w-full
+            md:w-auto
+            text-center
+          "
+        >
+          {{ phone }}
+        </a>
+
+      </div>
+
+    </main>
+
+    <Footer />
 
   </div>
-  </main>
 
-  <Footer />
 </template>
 
-<style>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.3s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;

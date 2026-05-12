@@ -1,3 +1,5 @@
+<!-- StatsCards.vue -->
+
 <script setup lang="ts">
 const props = defineProps<{
   stats: {
@@ -48,21 +50,54 @@ const cards = [
 </script>
 
 <template>
-  <div class="grid grid-cols-4 gap-4 mb-6">
+
+  <div
+    class="
+      grid
+      grid-cols-1
+      sm:grid-cols-2
+      xl:grid-cols-4
+      gap-4
+      mb-6
+    "
+  >
 
     <div
       v-for="item in cards"
       :key="item.title"
-      class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100"
+      class="
+        bg-white
+        rounded-2xl
+        p-5
+        shadow-sm
+        border
+        border-gray-100
+      "
     >
-      <p class="text-gray-400 mb-2 text-sm">
+
+      <p
+        class="
+          text-gray-400
+          mb-2
+          text-sm
+        "
+      >
         {{ item.title }}
       </p>
 
-      <h3 class="text-3xl font-bold">
+      <h3
+        class="
+          text-2xl
+          md:text-3xl
+          font-bold
+          break-words
+        "
+      >
         {{ item.value }}
       </h3>
+
     </div>
 
   </div>
+
 </template>

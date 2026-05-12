@@ -1,3 +1,5 @@
+<!-- DashboardPage.vue -->
+
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import axios from '../../api/axios'
@@ -24,95 +26,212 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="loading">
+
+  <div
+    v-if="loading"
+    class="text-center py-20 text-gray-500"
+  >
     Загрузка dashboard...
   </div>
 
-  <div v-else-if="data">
-    
-    <!-- Stats -->
+  <div
+    v-else-if="data"
+    class="space-y-6"
+  >
+
+    <!-- STATS -->
     <StatsCards
-  :stats="data.stats"
-  :funnel="data.funnel"
-/>
-    <div class="grid grid-cols-4 gap-4 mb-6">
+      :stats="data.stats"
+      :funnel="data.funnel"
+    />
 
-  <div class="bg-white p-6 rounded-2xl border">
-    <p class="text-gray-500 text-sm">
-      PAGE VIEW
-    </p>
+    <!-- FUNNEL -->
+    <div
+      class="
+        grid
+        grid-cols-1
+        sm:grid-cols-2
+        xl:grid-cols-4
+        gap-4
+      "
+    >
 
-    <h2 class="text-3xl font-bold">
-      {{ data.funnel.pageViews }}
-    </h2>
-  </div>
+      <div class="bg-white p-5 rounded-2xl border">
+        <p class="text-gray-500 text-sm">
+          PAGE VIEW
+        </p>
 
-  <div class="bg-white p-6 rounded-2xl border">
-    <p class="text-gray-500 text-sm">
-      PRODUCT VIEW
-    </p>
+        <h2 class="text-2xl md:text-3xl font-bold mt-2">
+          {{ data.funnel.pageViews }}
+        </h2>
+      </div>
 
-    <h2 class="text-3xl font-bold">
-      {{ data.funnel.productViews }}
-    </h2>
-  </div>
+      <div class="bg-white p-5 rounded-2xl border">
+        <p class="text-gray-500 text-sm">
+          PRODUCT VIEW
+        </p>
 
-  <div class="bg-white p-6 rounded-2xl border">
-    <p class="text-gray-500 text-sm">
-      ADD TO CART
-    </p>
+        <h2 class="text-2xl md:text-3xl font-bold mt-2">
+          {{ data.funnel.productViews }}
+        </h2>
+      </div>
 
-    <h2 class="text-3xl font-bold">
-      {{ data.funnel.addToCart }}
-    </h2>
-  </div>
+      <div class="bg-white p-5 rounded-2xl border">
+        <p class="text-gray-500 text-sm">
+          ADD TO CART
+        </p>
 
-  <div class="bg-white p-6 rounded-2xl border">
-    <p class="text-gray-500 text-sm">
-      ORDERS
-    </p>
+        <h2 class="text-2xl md:text-3xl font-bold mt-2">
+          {{ data.funnel.addToCart }}
+        </h2>
+      </div>
 
-    <h2 class="text-3xl font-bold">
-      {{ data.funnel.orders }}
-    </h2>
-  </div>
+      <div class="bg-white p-5 rounded-2xl border">
+        <p class="text-gray-500 text-sm">
+          ORDERS
+        </p>
 
-</div>
-    <!-- Charts -->
-    <div class="grid grid-cols-2 gap-6 mb-6">
-      <div class="bg-white rounded-2xl p-6 min-h-[350px] border border-gray-100">
+        <h2 class="text-2xl md:text-3xl font-bold mt-2">
+          {{ data.funnel.orders }}
+        </h2>
+      </div>
+
+    </div>
+
+    <!-- CHARTS -->
+    <div
+      class="
+        grid
+        grid-cols-1
+        xl:grid-cols-2
+        gap-6
+      "
+    >
+
+      <!-- REVENUE -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          min-h-[350px]
+          border
+          overflow-hidden
+        "
+      >
+
         <h3 class="text-xl font-bold mb-4">
           Выручка по дням
         </h3>
 
         <RevenueChart :data="data.orders" />
+
       </div>
 
-      <div class="bg-white rounded-2xl p-6 min-h-[350px] border border-gray-100">
+      <!-- ORDERS -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          min-h-[350px]
+          border
+        "
+      >
+
         <h3 class="text-xl font-bold mb-4">
           Заказы по дням
         </h3>
+
+        <div
+          class="
+            flex
+            flex-col
+            gap-3
+          "
+        >
+
+          <div
+            v-for="item in data.orders"
+            :key="item.date"
+            class="
+              flex
+              items-center
+              justify-between
+              border-b
+              pb-3
+              text-sm md:text-base
+            "
+          >
+
+            <span>
+              {{ item.date }}
+            </span>
+
+            <span class="font-semibold">
+              {{ item.orders || 0 }}
+            </span>
+
+          </div>
+
+        </div>
+
       </div>
+
     </div>
 
-    <!-- Bottom Blocks -->
-    <div class="grid grid-cols-2 gap-6">
-      <div class="bg-white rounded-2xl p-6 border border-gray-100 min-h-[300px]">
+    <!-- BOTTOM -->
+    <div
+      class="
+        grid
+        grid-cols-1
+        xl:grid-cols-2
+        gap-6
+      "
+    >
+
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+          min-h-[300px]
+        "
+      >
+
         <h3 class="text-xl font-bold mb-4">
           Популярные товары
         </h3>
 
-        <TopProducts :products="data.topProducts" />
+        <TopProducts
+          :products="data.topProducts"
+        />
+
       </div>
 
-      <div class="bg-white rounded-2xl p-6 border border-gray-100 min-h-[300px]">
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+          min-h-[300px]
+        "
+      >
+
         <h3 class="text-xl font-bold mb-4">
           Последние заказы
         </h3>
 
-        <RecentOrders :orders="data.recentOrders" />
+        <RecentOrders
+          :orders="data.recentOrders"
+        />
+
       </div>
+
     </div>
 
   </div>
+
 </template>

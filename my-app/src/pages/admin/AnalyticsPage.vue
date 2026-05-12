@@ -1,3 +1,5 @@
+<!-- AnalyticsDashboard.vue -->
+
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import api from '../../api/axios'
@@ -42,7 +44,7 @@ const getActionText = (type: string) => {
 
 <template>
 
-  <!-- Loading -->
+  <!-- LOADING -->
   <div
     v-if="loading"
     class="text-center py-20 text-gray-500"
@@ -50,16 +52,32 @@ const getActionText = (type: string) => {
     Загрузка аналитики...
   </div>
 
-  <!-- Content -->
+  <!-- CONTENT -->
   <div
     v-else-if="data"
     class="space-y-6"
   >
 
-    <div class="grid grid-cols-2 gap-6">
+    <!-- GRID -->
+    <div
+      class="
+        grid
+        grid-cols-1
+        xl:grid-cols-2
+        gap-6
+      "
+    >
 
-      <!-- Funnel -->
-      <div class="bg-white rounded-2xl p-6 border">
+      <!-- FUNNEL -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+          overflow-hidden
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-6">
           Funnel
@@ -67,44 +85,68 @@ const getActionText = (type: string) => {
 
         <div class="space-y-4">
 
-          <div class="flex justify-between">
+          <div
+            class="
+              flex
+              justify-between
+              gap-4
+              text-sm md:text-base
+            "
+          >
             <span>PAGE_VIEW</span>
-
-            <span>
-              {{ data.funnel.pageViews }}
-            </span>
+            <span>{{ data.funnel.pageViews }}</span>
           </div>
 
-          <div class="flex justify-between">
+          <div
+            class="
+              flex
+              justify-between
+              gap-4
+              text-sm md:text-base
+            "
+          >
             <span>PRODUCT_VIEW</span>
-
-            <span>
-              {{ data.funnel.productViews }}
-            </span>
+            <span>{{ data.funnel.productViews }}</span>
           </div>
 
-          <div class="flex justify-between">
+          <div
+            class="
+              flex
+              justify-between
+              gap-4
+              text-sm md:text-base
+            "
+          >
             <span>ADD_TO_CART</span>
-
-            <span>
-              {{ data.funnel.addToCart }}
-            </span>
+            <span>{{ data.funnel.addToCart }}</span>
           </div>
 
-          <div class="flex justify-between">
+          <div
+            class="
+              flex
+              justify-between
+              gap-4
+              text-sm md:text-base
+            "
+          >
             <span>ORDER_CREATED</span>
-
-            <span>
-              {{ data.funnel.orders }}
-            </span>
+            <span>{{ data.funnel.orders }}</span>
           </div>
 
         </div>
 
       </div>
 
-      <!-- Visits by hour -->
-      <div class="bg-white rounded-2xl p-6 border">
+      <!-- VISITS -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+          overflow-hidden
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-6">
           Visits by hour
@@ -113,21 +155,30 @@ const getActionText = (type: string) => {
         <div
           v-for="item in data.visitsByHour"
           :key="item.hour"
-          class="flex justify-between mb-2"
+          class="
+            flex
+            justify-between
+            mb-2
+            text-sm md:text-base
+          "
         >
-          <span>
-            {{ item.hour }}:00
-          </span>
+          <span>{{ item.hour }}:00</span>
 
-          <span>
-            {{ item.visits }}
-          </span>
+          <span>{{ item.visits }}</span>
         </div>
 
       </div>
 
-      <!-- Revenue -->
-      <div class="bg-white rounded-2xl p-6 border">
+      <!-- REVENUE -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+          overflow-hidden
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-6">
           Revenue
@@ -136,21 +187,31 @@ const getActionText = (type: string) => {
         <div
           v-for="item in data.orders"
           :key="item.date"
-          class="flex justify-between mb-2"
+          class="
+            flex
+            justify-between
+            gap-4
+            mb-2
+            text-sm md:text-base
+          "
         >
-          <span>
-            {{ item.date }}
-          </span>
+          <span>{{ item.date }}</span>
 
-          <span>
-            ₽ {{ item.revenue }}
-          </span>
+          <span>₽ {{ item.revenue }}</span>
         </div>
 
       </div>
 
-      <!-- Timeline -->
-      <div class="bg-white rounded-2xl p-6 border">
+      <!-- TIMELINE -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+          overflow-hidden
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-6">
           Activity Timeline
@@ -159,7 +220,11 @@ const getActionText = (type: string) => {
         <div
           v-for="event in data.activity"
           :key="event.id"
-          class="border-b py-3"
+          class="
+            border-b
+            py-3
+            break-words
+          "
         >
 
           <p class="font-semibold">
@@ -177,7 +242,7 @@ const getActionText = (type: string) => {
             {{ getActionText(event.type) }}
           </p>
 
-          <p class="text-sm text-gray-500">
+          <p class="text-sm text-gray-500 break-all">
             {{ event.page || '—' }}
           </p>
 
@@ -187,8 +252,16 @@ const getActionText = (type: string) => {
 
     </div>
 
-    <!-- Heatmap -->
-    <div class="bg-white rounded-2xl p-6 border">
+    <!-- HEATMAP -->
+    <div
+      class="
+        bg-white
+        rounded-2xl
+        p-4 md:p-6
+        border
+        overflow-hidden
+      "
+    >
 
       <h2 class="text-2xl font-bold mb-6">
         Heatmap
@@ -197,15 +270,18 @@ const getActionText = (type: string) => {
       <div
         v-for="item in data.heatmap.topPages"
         :key="item.page"
-        class="flex justify-between mb-2"
+        class="
+          flex
+          items-start
+          justify-between
+          gap-4
+          mb-2
+          break-all
+        "
       >
-        <span>
-          {{ item.page }}
-        </span>
+        <span>{{ item.page }}</span>
 
-        <span>
-          {{ item.visits }}
-        </span>
+        <span>{{ item.visits }}</span>
       </div>
 
     </div>

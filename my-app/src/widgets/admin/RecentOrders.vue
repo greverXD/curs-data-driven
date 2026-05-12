@@ -1,3 +1,5 @@
+<!-- RecentOrders.vue -->
+
 <script setup lang="ts">
 defineProps<{
   orders: any[]
@@ -5,10 +7,8 @@ defineProps<{
 </script>
 
 <template>
-  <div class="bg-white rounded-2xl p-6 border border-gray-100 min-h-[300px]">
-    <h3 class="text-xl font-bold mb-4">
-      Последние заказы
-    </h3>
+
+  <div>
 
     <div
       v-if="orders.length === 0"
@@ -20,21 +20,54 @@ defineProps<{
     <div
       v-for="order in orders"
       :key="order.id"
-      class="flex justify-between items-center border-b py-3"
+      class="
+        flex
+        flex-col
+        sm:flex-row
+        sm:items-center
+        sm:justify-between
+        gap-3
+        border-b
+        py-3
+      "
     >
-      <div>
-        <p class="font-semibold">
+
+      <div class="min-w-0">
+
+        <p
+          class="
+            font-semibold
+            break-all
+          "
+        >
           {{ order.user?.email }}
         </p>
 
-        <p class="text-sm text-gray-400">
-          {{ new Date(order.createdAt).toLocaleDateString() }}
+        <p
+          class="
+            text-sm
+            text-gray-400
+          "
+        >
+          {{
+            new Date(order.createdAt)
+              .toLocaleDateString()
+          }}
         </p>
+
       </div>
 
-      <div class="font-bold">
+      <div
+        class="
+          font-bold
+          shrink-0
+        "
+      >
         {{ order.total }} ₽
       </div>
+
     </div>
+
   </div>
+
 </template>

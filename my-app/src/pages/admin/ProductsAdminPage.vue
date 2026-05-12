@@ -1,3 +1,5 @@
+<!-- ProductsAdminPage.vue -->
+
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
@@ -115,17 +117,33 @@ const uploadImage = async (
     Загрузка...
   </div>
 
-  <div v-else class="space-y-10">
+  <div
+    v-else
+    class="space-y-10"
+  >
 
     <!-- CREATE -->
-
-    <div class="bg-white rounded-2xl border p-6">
+    <div
+      class="
+        bg-white
+        rounded-2xl
+        border
+        p-4 md:p-6
+      "
+    >
 
       <h2 class="text-3xl font-bold mb-6">
         Create Product
       </h2>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div
+        class="
+          grid
+          grid-cols-1
+          md:grid-cols-2
+          gap-4
+        "
+      >
 
         <input
           v-model="form.title"
@@ -142,7 +160,12 @@ const uploadImage = async (
         <textarea
           v-model="form.description"
           placeholder="Описание"
-          class="border p-3 rounded-xl col-span-2"
+          class="
+            border
+            p-3
+            rounded-xl
+            md:col-span-2
+          "
         />
 
         <input
@@ -154,21 +177,32 @@ const uploadImage = async (
 
       </div>
 
-      <!-- Variants -->
-
+      <!-- VARIANTS -->
       <div class="mt-8">
 
         <div
           v-for="(variant, index) in form.variants"
           :key="index"
-          class="border rounded-2xl p-4 mb-4"
+          class="
+            border
+            rounded-2xl
+            p-4
+            mb-4
+          "
         >
 
           <h3 class="font-bold mb-4">
             Variant {{ index + 1 }}
           </h3>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div
+            class="
+              grid
+              grid-cols-1
+              md:grid-cols-2
+              gap-4
+            "
+          >
 
             <input
               v-model="variant.size"
@@ -196,25 +230,27 @@ const uploadImage = async (
               class="border p-3 rounded-xl"
             />
 
-           <div class="col-span-2">
+            <div class="md:col-span-2">
 
-  <input
-    type="file"
+              <input
+                type="file"
+                @change="
+                  uploadImage($event, index)
+                "
+              />
 
-    @change="
-      uploadImage($event, index)
-    "
-  />
+              <img
+                v-if="variant.image"
+                :src="variant.image"
+                class="
+                  w-32 h-32
+                  object-cover
+                  mt-4
+                  rounded-xl
+                "
+              />
 
-  <img
-    v-if="variant.image"
-
-    :src="variant.image"
-
-    class="w-32 h-32 object-cover mt-4 rounded-xl"
-  />
-
-</div>
+            </div>
 
           </div>
 
@@ -222,7 +258,11 @@ const uploadImage = async (
 
         <button
           @click="addVariant"
-          class="border px-4 py-2 rounded-xl"
+          class="
+            border
+            px-4 py-2
+            rounded-xl
+          "
         >
           + Variant
         </button>
@@ -231,7 +271,14 @@ const uploadImage = async (
 
       <button
         @click="createProduct"
-        class="mt-8 bg-black text-white px-6 py-3 rounded-2xl"
+        class="
+          mt-8
+          bg-black
+          text-white
+          px-6 py-3
+          rounded-2xl
+          w-full md:w-auto
+        "
       >
         Create
       </button>
@@ -239,8 +286,14 @@ const uploadImage = async (
     </div>
 
     <!-- PRODUCTS -->
-
-    <div class="bg-white rounded-2xl border p-6">
+    <div
+      class="
+        bg-white
+        rounded-2xl
+        border
+        p-4 md:p-6
+      "
+    >
 
       <h2 class="text-3xl font-bold mb-6">
         Products
@@ -252,7 +305,15 @@ const uploadImage = async (
         class="border-b py-6"
       >
 
-        <div class="flex justify-between">
+        <div
+          class="
+            flex
+            flex-col
+            md:flex-row
+            md:justify-between
+            gap-4
+          "
+        >
 
           <div>
 
@@ -273,21 +334,33 @@ const uploadImage = async (
 
           <button
             @click="deleteProduct(product.id)"
-            class="text-red-500"
+            class="
+              text-red-500
+              text-left
+              md:text-right
+            "
           >
             Delete
           </button>
 
         </div>
 
-        <!-- Variants -->
-
-        <div class="mt-4 space-y-2">
+        <!-- VARIANTS -->
+        <div class="mt-4 space-y-3">
 
           <div
             v-for="variant in product.variants"
             :key="variant.id"
-            class="border rounded-xl p-3 flex justify-between"
+            class="
+              border
+              rounded-xl
+              p-3
+              flex
+              flex-col
+              md:flex-row
+              md:justify-between
+              gap-2
+            "
           >
 
             <div>

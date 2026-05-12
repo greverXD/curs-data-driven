@@ -1,3 +1,5 @@
+<!-- CustomersAnalytics.vue -->
+
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import api from '../../api/axios'
@@ -14,12 +16,27 @@ onMounted(async () => {
 </script>
 
 <template>
+
   <div v-if="data">
 
-    <div class="grid grid-cols-2 gap-6">
+    <div
+      class="
+        grid
+        grid-cols-1
+        xl:grid-cols-2
+        gap-6
+      "
+    >
 
-      <!-- Latest users -->
-      <div class="bg-white rounded-2xl p-6 border">
+      <!-- LATEST USERS -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-4">
           Последние регистрации
@@ -28,26 +45,41 @@ onMounted(async () => {
         <div
           v-for="user in data.customers.latestUsers"
           :key="user.id"
-          class="border-b py-3"
+          class="
+            border-b
+            py-3
+            break-all
+          "
         >
+
           <p class="font-semibold">
             {{ user.email }}
           </p>
+
           <p class="text-sm text-gray-500">
-  IP: {{ user.ipAddress }}
-</p>
+            IP: {{ user.ipAddress }}
+          </p>
+
           <p class="text-sm text-gray-500">
             {{
               new Date(user.createdAt)
                 .toLocaleDateString()
             }}
           </p>
+
         </div>
 
       </div>
 
-      <!-- Active users -->
-      <div class="bg-white rounded-2xl p-6 border">
+      <!-- ACTIVE USERS -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-4">
           Самые активные
@@ -56,12 +88,17 @@ onMounted(async () => {
         <div
           v-for="user in data.customers.activeUsers"
           :key="user.email"
-          class="border-b py-3"
+          class="
+            border-b
+            py-3
+            break-all
+          "
         >
+
           <p class="font-semibold">
             {{ user.email }}
           </p>
-        
+
           <p>
             Activity:
             {{ user.activity }}
@@ -76,12 +113,20 @@ onMounted(async () => {
             Total spent:
             ₽ {{ user.totalSpent }}
           </p>
+
         </div>
 
       </div>
 
-      <!-- Browser analytics -->
-      <div class="bg-white rounded-2xl p-6 border">
+      <!-- BROWSER -->
+      <div
+        class="
+          bg-white
+          rounded-2xl
+          p-4 md:p-6
+          border
+        "
+      >
 
         <h2 class="text-2xl font-bold mb-4">
           Browser Analytics
@@ -102,4 +147,5 @@ onMounted(async () => {
     </div>
 
   </div>
+
 </template>

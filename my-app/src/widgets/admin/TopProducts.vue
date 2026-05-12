@@ -1,3 +1,5 @@
+<!-- TopProducts.vue -->
+
 <script setup lang="ts">
 defineProps<{
   products: {
@@ -8,10 +10,8 @@ defineProps<{
 </script>
 
 <template>
-  <div class="bg-white rounded-2xl p-6 border border-gray-100 min-h-[300px]">
-    <h3 class="text-xl font-bold mb-4">
-      Популярные товары
-    </h3>
+
+  <div>
 
     <div
       v-if="products.length === 0"
@@ -23,15 +23,32 @@ defineProps<{
     <div
       v-for="item in products"
       :key="item.title"
-      class="flex justify-between border-b py-3"
+      class="
+        flex
+        flex-col
+        sm:flex-row
+        sm:justify-between
+        gap-2
+        border-b
+        py-3
+      "
     >
-      <p>
+
+      <p class="break-words">
         {{ item.title }}
       </p>
 
-      <p class="font-bold">
+      <p
+        class="
+          font-bold
+          shrink-0
+        "
+      >
         {{ item.sold }} продаж
       </p>
+
     </div>
+
   </div>
+
 </template>
