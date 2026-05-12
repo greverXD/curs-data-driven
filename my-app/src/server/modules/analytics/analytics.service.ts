@@ -377,30 +377,23 @@ const osUsers = {
 geoEvents.forEach(event => {
   const ua = event.userAgent || ''
 
-  const uniqueKey =
-    event.userId ||
-    event.ipAddress ||
-    'anonymous'
+ const uniqueKey = `${
+  event.userId || event.ipAddress || 'guest'
+}-${event.userAgent || 'unknown'}`
 
   // Browsers
-  if (ua.includes('Chrome')) {
-    browserUsers.Chrome.add(uniqueKey)
-  }
-
-  if (ua.includes('Firefox')) {
-    browserUsers.Firefox.add(uniqueKey)
-  }
-
-  if (
-    ua.includes('Safari') &&
-    !ua.includes('Chrome')
-  ) {
-    browserUsers.Safari.add(uniqueKey)
-  }
-
-  if (ua.includes('Edg')) {
-    browserUsers.Edge.add(uniqueKey)
-  }
+if (ua.includes('Edg')) {
+  browserUsers.Edge.add(uniqueKey)
+} else if (ua.includes('Firefox')) {
+  browserUsers.Firefox.add(uniqueKey)
+} else if (
+  ua.includes('Safari') &&
+  !ua.includes('Chrome')
+) {
+  browserUsers.Safari.add(uniqueKey)
+} else if (ua.includes('Chrome')) {
+  browserUsers.Chrome.add(uniqueKey)
+}
 
   // Devices
   if (/Mobile|Android|iPhone/i.test(ua)) {
@@ -412,25 +405,17 @@ geoEvents.forEach(event => {
   }
 
   // OS
-  if (ua.includes('Windows')) {
-    osUsers.Windows.add(uniqueKey)
-  }
-
-  if (ua.includes('Mac OS')) {
-    osUsers.MacOS.add(uniqueKey)
-  }
-
   if (ua.includes('Android')) {
-    osUsers.Android.add(uniqueKey)
-  }
-
-  if (ua.includes('iPhone')) {
-    osUsers.iPhone.add(uniqueKey)
-  }
-
-  if (ua.includes('Linux')) {
-    osUsers.Linux.add(uniqueKey)
-  }
+  osUsers.Android.add(uniqueKey)
+} else if (ua.includes('iPhone')) {
+  osUsers.iPhone.add(uniqueKey)
+} else if (ua.includes('Windows')) {
+  osUsers.Windows.add(uniqueKey)
+} else if (ua.includes('Mac OS')) {
+  osUsers.MacOS.add(uniqueKey)
+} else if (ua.includes('Linux')) {
+  osUsers.Linux.add(uniqueKey)
+}
 })
 
 const browsers = {

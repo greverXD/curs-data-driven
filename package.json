@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "git-filter-repo": "^0.0.30",
+    "vue-i18n": "^11.4.2",
     "vue-router": "^5.0.4"
   }
 }
