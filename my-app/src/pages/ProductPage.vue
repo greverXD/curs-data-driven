@@ -1,70 +1,163 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import {
+  ref,
+  onMounted,
+  computed
+} from 'vue'
+
 import { useRoute } from 'vue-router'
+
 import Header from '../widgets/Header.vue'
 import Footer from '../widgets/Footer.vue'
-import ProductGallery from '../entities/product/ProductGallery.vue'
-import ProductInfo from '../entities/product/ProductInfo.vue'
-import { useCartStore } from '../store/cart'
-import { trackEvent } from '../lib/analytics'
+
+import ProductGallery
+from '../entities/product/ProductGallery.vue'
+
+import ProductInfo
+from '../entities/product/ProductInfo.vue'
+
+import { useCartStore }
+from '../store/cart'
+
+import { useFavoritesStore }
+from '../store/favorites'
+
+import { trackEvent }
+from '../lib/analytics'
+
 const cart = useCartStore()
+
+const favoritesStore =
+  useFavoritesStore()
+
 const route = useRoute()
-const productId = route.params.id as string
+
+const productId =
+  route.params.id as string
 
 const product = ref<any>(null)
-const selectedSize = ref<string | null>(null)
+
+const selectedSize =
+  ref<string | null>(null)
+
+// FAVORITES
+const liked = computed(() => {
+
+  if (!product.value) {
+    return false
+  }
+
+  return favoritesStore.isLiked(
+    product.value.id
+  )
+})
+
+const toggleLike = () => {
+
+  if (!product.value) return
+
+  favoritesStore.toggleFavorite({
+    id: product.value.id,
+    title: product.value.title,
+    price:
+      selectedVariant.value?.price || 0,
+    image:
+      selectedVariant.value?.image || '',
+    discountPercent:
+      product.value.discountPercent
+  })
+}
+
+// CART
 const addToCart = () => {
+
   if (!selectedVariant.value) {
+
     alert('Выберите размер')
+
     return
   }
 
-  cart.addToCart(product.value, selectedVariant.value)
-
-
+  cart.addToCart(
+    product.value,
+    selectedVariant.value
+  )
 }
+
+// LOAD PRODUCT
 onMounted(async () => {
+
   try {
-    const res = await fetch(import.meta.env.VITE_API_URL + `/api/products/${productId}`)
-    
+
+    const res = await fetch(
+      import.meta.env.VITE_API_URL +
+      `/api/products/${productId}`
+    )
+
     if (!res.ok) {
-      throw new Error('Product not found')
+      throw new Error(
+        'Product not found'
+      )
     }
 
     const data = await res.json()
-trackEvent({
-  type: 'PRODUCT_VIEW',
-  productId: data.id,
-  page: window.location.pathname
-})
+
+    trackEvent({
+      type: 'PRODUCT_VIEW',
+      productId: data.id,
+      page:
+        window.location.pathname
+    })
+
     console.log('PRODUCT:', data)
 
     product.value = data
 
     if (data?.variants?.length) {
-      selectedSize.value = data.variants[0].size
+
+      selectedSize.value =
+        data.variants[0].size
+
     }
 
   } catch (e) {
+
     console.error(e)
+
   }
-  
+
 })
 
-// выбранный вариант
-const selectedVariant = computed(() => {
-  const variant = product.value?.variants?.find(
-    (v: any) => v.size === selectedSize.value
-  )
+// SELECTED VARIANT
+const selectedVariant =
+  computed(() => {
 
-  console.log('SELECTED VARIANT:', variant)
+    const variant =
+      product.value?.variants?.find(
+        (v: any) =>
+          v.size ===
+          selectedSize.value
+      )
 
-  return variant
-})
+    console.log(
+      'SELECTED VARIANT:',
+      variant
+    )
+
+    return variant
+  })
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col overflow-x-hidden">
+
+  <div
+    class="
+      min-h-screen
+      flex
+      flex-col
+      overflow-x-hidden
+    "
+  >
 
     <Header />
 
@@ -77,53 +170,103 @@ const selectedVariant = computed(() => {
       "
     >
 
-<div
-  class="
-    grid
-    grid-cols-1
-    xl:grid-cols-2
-    gap-8 lg:gap-12
-    items-start
-    max-w-7xl
-    mx-auto
-    overflow-hidden
-  "
->
+      <div
+        class="
+          grid
+          grid-cols-1
+          xl:grid-cols-2
+          gap-8 lg:gap-12
+          items-start
+          max-w-7xl
+          mx-auto
+          overflow-hidden
+        "
+      >
 
+        <!-- GALLERY -->
         <ProductGallery
           v-if="selectedVariant"
-          :images="[selectedVariant.image]"
+          :images="[
+            selectedVariant.image
+          ]"
         />
 
         <div>
 
+          <!-- INFO -->
           <ProductInfo
-            v-if="product && selectedVariant"
+            v-if="
+              product &&
+              selectedVariant
+            "
             :product="product"
-            :selectedVariant="selectedVariant"
-            :selectedSize="selectedSize"
-            @selectSize="selectedSize = $event"
+            :selectedVariant="
+              selectedVariant
+            "
+            :selectedSize="
+              selectedSize
+            "
+            @selectSize="
+              selectedSize = $event
+            "
           />
 
-          <!-- BUTTON -->
-          <button
-            @click="addToCart"
+          <!-- ACTIONS -->
+          <div
             class="
               mt-8
-              w-full md:w-auto
-              px-8 py-4
-              bg-black
-              text-white
-              rounded
-              transition-all
-              duration-300
-              hover:scale-105
-              hover:bg-gray-800
-              active:scale-95
+              flex
+              flex-col
+              md:flex-row
+              gap-4
+              items-start
             "
           >
-            Добавить в корзину
-          </button>
+
+            <!-- CART -->
+            <button
+              @click="addToCart"
+              class="
+                w-full md:w-auto
+                px-8 py-4
+                bg-black
+                text-white
+                rounded-2xl
+                transition-all
+                duration-300
+                hover:scale-105
+                hover:bg-gray-800
+                active:scale-95
+              "
+            >
+              Добавить в корзину
+            </button>
+
+            <!-- FAVORITE -->
+            <button
+              @click="toggleLike"
+              class="
+                w-14
+                h-14
+                rounded-full
+                border
+                flex
+                items-center
+                justify-center
+                text-2xl
+                transition-all
+                duration-300
+              "
+              :class="
+                liked
+                  ? 'bg-red-500 text-white border-red-500'
+                  : 'bg-white text-black hover:border-red-500'
+              "
+            >
+              ♥
+            </button>
+
+          </div>
 
         </div>
 
@@ -134,4 +277,5 @@ const selectedVariant = computed(() => {
     <Footer />
 
   </div>
+
 </template>
