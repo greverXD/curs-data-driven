@@ -18,9 +18,57 @@ defineEmits(['selectSize'])
     </h1>
 
     <!-- PRICE -->
-    <p class="text-2xl font-medium mt-3">
-      {{ selectedVariant?.price }} $
-    </p>
+    <div
+  class="
+    flex
+    items-center
+    gap-3
+    mt-3
+    flex-wrap
+  "
+>
+
+  <!-- NEW PRICE -->
+  <p class="text-3xl font-bold">
+    {{
+      Math.round(
+        selectedVariant?.price *
+        (
+          1 -
+          (product.discountPercent || 0) / 100
+        )
+      )
+    }} $
+  </p>
+
+  <!-- OLD PRICE -->
+  <p
+    v-if="product.discountPercent"
+    class="
+      text-xl
+      text-gray-400
+      line-through
+    "
+  >
+    {{ selectedVariant?.price }} $
+  </p>
+
+  <!-- DISCOUNT BADGE -->
+  <div
+    v-if="product.discountPercent"
+    class="
+      bg-red-500
+      text-white
+      text-sm
+      px-3 py-1
+      rounded-full
+      font-semibold
+    "
+  >
+    -{{ product.discountPercent }}%
+  </div>
+
+</div>
 
     <!-- DESCRIPTION -->
     <p class="mt-6 text-gray-600 leading-7">

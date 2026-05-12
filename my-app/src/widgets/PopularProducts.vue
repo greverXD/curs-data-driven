@@ -24,11 +24,14 @@ onMounted(async () => {
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 
       <ProductCard
-        v-for="product in products"
-        :key="product.id"
-        v-bind="product"
-        :discountPercent="product.discountPercent"
-      />
+  v-for="product in products"
+  :key="product.id"
+  :id="product.id"
+  :title="product.title"
+  :image="product.variants?.[0]?.image"
+  :price="product.variants?.[0]?.price || 0"
+  :discountPercent="product.discountPercent"
+/>
 
     </div>
 

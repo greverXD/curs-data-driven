@@ -44,7 +44,7 @@ const discountedPrice =
       </button>
     </div>
      <div
-  v-if="props.discountPercent"
+  v-if="(props.discountPercent || 0) > 0"
   class="
     absolute
     top-2
@@ -67,7 +67,7 @@ const discountedPrice =
   </p>
 
   <p
-    v-if="props.discountPercent"
+    v-if="(props.discountPercent || 0) > 0"
     class="text-gray-400 line-through text-sm"
   >
     ${{ props.price }}
